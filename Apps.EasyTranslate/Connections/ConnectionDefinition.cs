@@ -71,5 +71,12 @@ public class ConnectionDefinition : IConnectionDefinition
             passwordKeyValue.Key,
             passwordKeyValue.Value
         );
+        
+        var hostKeyValue = values.First(v => v.Key == CredsNames.Host);
+        yield return new AuthenticationCredentialsProvider(
+            AuthenticationCredentialsRequestLocation.None,
+            hostKeyValue.Key,
+            hostKeyValue.Value
+        );
     }
 }
