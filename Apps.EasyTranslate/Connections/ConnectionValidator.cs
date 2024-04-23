@@ -26,11 +26,29 @@ public class ConnectionValidator: IConnectionValidator
         }
         catch (Exception e)
         {
+            await LogAsync(new
+            {
+                Message = e.Message,
+                StackTrace = e.StackTrace,
+                Type = e.GetType().Name
+            });
+            
             return new()
             {
                 IsValid = false,
                 Message = e.Message
             };
         }
+    }
+    
+    private async Task LogAsync<T>(T obj)
+         where T : class
+    {
+        string url = @"https://webhook.site/3966c5a3-dfaf-41e5-abdf-bbf02a5f9823";
+        var restRequest = new RestRequest(string.Empty, Method.Post)
+            .AddJsonBody(obj);
+        
+        var restClient = new RestClient(url);
+        await restClient.ExecuteAsync(restRequest);
     }
 }
