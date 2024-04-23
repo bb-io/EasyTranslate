@@ -49,6 +49,8 @@ public class EasyTranslateClient : RestClient
         
         var clientId = creds.Get(CredsNames.ClientId);
         var clientSecret = creds.Get(CredsNames.ClientSecret);
+        var username = creds.Get(CredsNames.Username);
+        var password = creds.Get(CredsNames.Password);
         var grantType = new KeyValuePair<string,string>(CredsNames.GrantType, "password");
         var scope = new KeyValuePair<string,string>(CredsNames.Scope, "dashboard");
 
@@ -56,16 +58,25 @@ public class EasyTranslateClient : RestClient
 
         request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
 
+        request.AddParameter(username.KeyName, username.Value, ParameterType.GetOrPost);
+        request.AddParameter(password.KeyName, password.Value, ParameterType.GetOrPost);
         request.AddParameter(clientId.KeyName, clientId.Value, ParameterType.GetOrPost);
         request.AddParameter(clientSecret.KeyName, clientSecret.Value, ParameterType.GetOrPost);
         request.AddParameter(grantType.Key, grantType.Value, ParameterType.GetOrPost);
         request.AddParameter(scope.Key, scope.Value, ParameterType.GetOrPost);
 
         var response = await this.ExecuteAsync<TokenResponse>(request);
-    
-        if(response.Data is null)
-            throw new Exception("Failed to get token");
 
+        if (response.Data is null)
+        {
+            throw new Exception("Failed to get token");
+        }
+
+        if (string.IsNullOrEmpty(response.Data.AccessToken))
+        {
+            response.Data = JsonConvert.DeserializeObject<TokenResponse>(response.Content);
+        }
+        
         return response.Data.AccessToken;
     }
     
