@@ -6,6 +6,9 @@ namespace Apps.EasyTranslate.Models.Responses.Projects;
 
 public class ProjectResponse
 {
+    public ProjectResponse()
+    { }
+    
     public ProjectResponse(Data<ProjectAttributes> data)
     {
         Id = data.Id;

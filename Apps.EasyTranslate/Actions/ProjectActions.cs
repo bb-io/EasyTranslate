@@ -135,8 +135,8 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         var response = await client.ExecuteAsync(easyTranslateRequest);
         if (response.IsSuccessful)
         {
-            var projectResponse = JsonConvert.DeserializeObject<ProjectResponse>(response.Content);
-            return projectResponse;
+            var projectResponse = JsonConvert.DeserializeObject<GetAllProjectsDto>(response.Content);
+            return new ProjectResponse(projectResponse.Data.FirstOrDefault() ?? throw new Exception("No project returned"));
         }
         
         throw new HttpRequestException($"Error {response.StatusCode}: {response.Content}");
