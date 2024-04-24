@@ -20,9 +20,7 @@ namespace Apps.EasyTranslate.Actions;
 public class ProjectActions(InvocationContext invocationContext, IFileManagementClient fileManagementClient)
     : AppInvocable(invocationContext)
 {
-    private readonly IFileManagementClient _fileManagementClient = fileManagementClient;
-
-    [Action("Fetch all projects")]
+    [Action("Fetch all projects", Description = "Fetch all projects for a team")]
     public async Task<FetchAllProjectsResponse> FetchAllProjects([ActionParameter] TeamRequest request,
         [ActionParameter] FetchAllProjectsRequest fetchRequest)
     {
@@ -52,7 +50,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         return new FetchAllProjectsResponse(allProjects);
     }
     
-    [Action("Create a project from JSON content")]
+    [Action("Create a project from JSON content", Description = "Create a project from JSON content")]
     public async Task<ProjectResponse>  CreateProjectFromJson([ActionParameter] CreateProjectFromJsonRequest request)
     {
         string endpoint = $"{ApiEndpoints.ProjectBase}/teams/{request.TeamName}/projects";
@@ -79,13 +77,13 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         return response;
     }
     
-    [Action("Create a project from a file")]
+    [Action("Create a project from a file", Description = "Create a project from a file")]
     public async Task<ProjectResponse> CreateProjectFromFile([ActionParameter] CreateProjectFromFileRequest request)
     {
         string endpoint = $"{ApiEndpoints.ProjectBase}/teams/{request.TeamName}/projects";
 
         string token = await Client.GetToken(Creds);
-        string baseUrl = await Client.GetToken(Creds);
+        string baseUrl = Client.BuildUrl(Creds);
 
         var easyTranslateRequest = new EasyTranslateRequest(new EasyTranslateRequestParameters
         {
@@ -98,7 +96,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         int fileIndex = 0;
         foreach (var file in request.Files)
         {
-            var stream = await _fileManagementClient.DownloadAsync(file);
+            var stream = await fileManagementClient.DownloadAsync(file);
             var bytes = await stream.GetByteData();
             formData.Add(new ByteArrayContent(bytes), $"data[attributes][files][{fileIndex++}]");
         }

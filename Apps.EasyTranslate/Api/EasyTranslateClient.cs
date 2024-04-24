@@ -95,7 +95,7 @@ public class EasyTranslateClient : RestClient
         return new Exception($"Status code: {response.StatusCode}, Message: {response.Content}");
     }
 
-    private string BuildUrl(AuthenticationCredentialsProvider[] creds)
+    public string BuildUrl(AuthenticationCredentialsProvider[] creds)
     {
         var host = creds.Get(CredsNames.Host);
         return $"https://{host.Value.TrimEnd('/')}";
