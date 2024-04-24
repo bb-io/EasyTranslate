@@ -92,7 +92,9 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         }, token);
 
         var formData = new MultipartFormDataContent();
-
+        
+        formData.Add(new StringContent("projects"), "data[type]");
+        
         int fileIndex = 0;
         foreach (var file in request.Files)
         {
@@ -101,31 +103,32 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
             formData.Add(new ByteArrayContent(bytes), $"data[attributes][files][{fileIndex++}]");
         }
 
-        formData.Add(new StringContent(request.SourceLanguage), "source_language");
+        formData.Add(new StringContent(request.SourceLanguage), "data[attributes][source_language]");
 
+        var targetLanguageIndex = 0;
         foreach (var language in request.TargetLanguages)
         {
-            formData.Add(new StringContent(language), "target_languages[]");
+            formData.Add(new StringContent(language), $"data[attributes][target_languages][{targetLanguageIndex++}]");
         }
+        
+        formData.Add(new StringContent(request.WorkflowId), "data[attributes][workflow_id]");
 
-        if (request.Deadline.HasValue)
-        {
-            formData.Add(new StringContent(request.Deadline.Value.ToString("o")), "deadline");
-        }
         if (!string.IsNullOrWhiteSpace(request.CallbackUrl))
         {
-            formData.Add(new StringContent(request.CallbackUrl), "callback_url");
+            formData.Add(new StringContent(request.CallbackUrl), "data[attributes][callback_url]");
         }
         if (!string.IsNullOrWhiteSpace(request.FolderName))
         {
-            formData.Add(new StringContent(request.FolderName), "folder_name");
+            formData.Add(new StringContent(request.FolderName), "data[attributes][folder_name]");
         }
         if (!string.IsNullOrWhiteSpace(request.FolderId))
         {
-            formData.Add(new StringContent(request.FolderId), "folder_id");
+            formData.Add(new StringContent(request.FolderId), "data[attributes][folder_id]");
         }
-        
-        formData.Add(new StringContent(request.WorkflowId), "workflow_id");
+        if (request.Deadline.HasValue)
+        {
+            formData.Add(new StringContent(request.Deadline.Value.ToString("o")), "data[attributes][preferred_deadline]");
+        }
 
         foreach (var content in formData)
         {
