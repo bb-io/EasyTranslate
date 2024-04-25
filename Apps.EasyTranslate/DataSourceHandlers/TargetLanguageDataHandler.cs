@@ -9,7 +9,7 @@ using RestSharp;
 
 namespace Apps.EasyTranslate.DataSourceHandlers;
 
-public class SourceLanguageDataHandler(InvocationContext invocationContext, [ActionParameter] CreateProjectRequest request)
+public class TargetLanguageDataHandler(InvocationContext invocationContext, [ActionParameter] CreateProjectRequest request)
     : AppInvocable(invocationContext), IAsyncDataSourceHandler
 {
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
@@ -20,16 +20,26 @@ public class SourceLanguageDataHandler(InvocationContext invocationContext, [Act
             throw new InvalidOperationException("You should first select a team");
         }
 
+        if (string.IsNullOrEmpty(request.SourceLanguage))
+        {
+            throw new InvalidOperationException("You should first select a source language");
+        }
+
         var responses = await Client.ExecuteWithJson<GetAccountDto>(
             ApiEndpoints.TeamBase + $"/{request.TeamName}", Method.Get, null,
             Creds);
 
         var languagePairs = responses.Data.Attributes.LanguagePairs;
         
-        return languagePairs.Translation
-            .Where(x => context.SearchString == null ||
-                        x.Value.Name.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
-            .Take(20)
-            .ToDictionary(x => x.Key, x => x.Value.Name);
+        if(languagePairs.Translation.TryGetValue(request.SourceLanguage, out var sourceLanguagePair))
+        {
+            return sourceLanguagePair.TargetLanguages
+                .Where(x => context.SearchString == null ||
+                            x.Name.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
+                .Take(20)
+                .ToDictionary(x => x.Code, x => x.Name);
+        } 
+        
+        throw new InvalidOperationException("Source language not found in team language pairs");
     }
 }

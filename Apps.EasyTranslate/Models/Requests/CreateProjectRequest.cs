@@ -6,10 +6,10 @@ namespace Apps.EasyTranslate.Models.Requests;
 
 public class CreateProjectRequest : TeamRequest
 {
-    [Display("Source language")]
+    [Display("Source language"), DataSource(typeof(SourceLanguageDataHandler))]
     public string SourceLanguage { get; set; }
     
-    [Display("Target languages")]
+    [Display("Target languages"), DataSource(typeof(TargetLanguageDataHandler))]
     public IEnumerable<string> TargetLanguages { get; set; }
 
     [Display("Workflow ID"), DataSource(typeof(WorkflowDataHandler))]

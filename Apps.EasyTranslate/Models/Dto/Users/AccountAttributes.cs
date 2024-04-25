@@ -1,4 +1,5 @@
 using Apps.EasyTranslate.Models.Dto.Generic;
+using Apps.EasyTranslate.Models.Dto.Languages;
 using Apps.EasyTranslate.Models.Dto.Workflows;
 using Newtonsoft.Json;
 
@@ -17,4 +18,7 @@ public class AccountAttributes
 
     [JsonProperty("workflows")]
     public Data<WorkflowAttributes>[] Workflows { get; set; }
+
+    [JsonProperty("language_pairs")]
+    public LanguagePairsDto LanguagePairs { get; set; }
 }
