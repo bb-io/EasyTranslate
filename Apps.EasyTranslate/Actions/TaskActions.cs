@@ -20,4 +20,12 @@ public class TaskActions(InvocationContext invocationContext) : AppInvocable(inv
         var dto = await Client.ExecuteWithJson<GetAllTasksDto>(endpoint, Method.Get, null, Creds);
         return new GetAllTasksResponse(dto);
     }
+    
+    [Action("Get task by ID", Description = "Get task from project by ID")]
+    public async Task<TaskResponse> GetTaskById([ActionParameter] TaskRequest request)
+    {
+        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/{request.TeamName}/projects/{request.ProjectId}/tasks/{request.TaskId}";
+        var dto = await Client.ExecuteWithJson<GetTaskDto>(endpoint, Method.Get, null, Creds);
+        return new TaskResponse(dto.Data);
+    }
 }

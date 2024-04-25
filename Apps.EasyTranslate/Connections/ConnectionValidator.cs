@@ -7,7 +7,7 @@ using RestSharp;
 
 namespace Apps.EasyTranslate.Connections;
 
-public class ConnectionValidator: IConnectionValidator
+public class ConnectionValidator : IConnectionValidator
 {
     private readonly EasyTranslateClient _client = new();
 
@@ -17,7 +17,8 @@ public class ConnectionValidator: IConnectionValidator
     {
         try
         {
-            await _client.ExecuteWithJson<GetAuthenticatedUsersResponse>(ApiEndpoints.User, Method.Get, null, authenticationCredentialsProviders.ToArray());
+            await _client.ExecuteWithJson<GetAuthenticatedUsersResponse>(ApiEndpoints.User, Method.Get, null,
+                authenticationCredentialsProviders.ToArray());
 
             return new()
             {

@@ -5,6 +5,8 @@ namespace Apps.EasyTranslate.Models.Dto.Users;
 public class GetAuthenticatedUsersResponse
 {
     public Data<UserAttributes> Data { get; set; }
+
+    public Data<AccountAttributes>[] Included { get; set; }
     
     public Meta Meta { get; set; }
 }
