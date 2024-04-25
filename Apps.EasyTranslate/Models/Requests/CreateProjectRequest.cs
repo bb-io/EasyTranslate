@@ -1,4 +1,6 @@
+using Apps.EasyTranslate.DataSourceHandlers;
 using Blackbird.Applications.Sdk.Common;
+using Blackbird.Applications.Sdk.Common.Dynamic;
 
 namespace Apps.EasyTranslate.Models.Requests;
 
@@ -10,6 +12,6 @@ public class CreateProjectRequest : TeamRequest
     [Display("Target languages")]
     public IEnumerable<string> TargetLanguages { get; set; }
 
-    [Display("Workflow ID")]
+    [Display("Workflow ID"), DataSource(typeof(WorkflowDataHandler))]
     public string WorkflowId { get; set; }
 }

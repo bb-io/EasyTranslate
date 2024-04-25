@@ -13,11 +13,11 @@ public class TeamDataHandler(InvocationContext invocationContext)
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
-        var respones = await Client.ExecuteWithJson<GetAuthenticatedUsersResponse>(ApiEndpoints.User, Method.Get, null,
+        var responses = await Client.ExecuteWithJson<GetAuthenticatedUsersResponse>(ApiEndpoints.User, Method.Get, null,
             Creds);
 
-        var attributes = respones.Included.Select(x => x.Attributes).ToList();
-        
+        var attributes = responses.Included.Select(x => x.Attributes).ToList();
+
         return attributes
             .Where(x => context.SearchString == null ||
                         x.TeamIdentifier.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))

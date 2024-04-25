@@ -6,4 +6,5 @@ public class ApiEndpoints
     public const string User = "/api/v1/user";
 
     public const string ProjectBase = "/laas/api/v2";
+    public const string TeamBase = "/laas/api/v2/teams";
 }
