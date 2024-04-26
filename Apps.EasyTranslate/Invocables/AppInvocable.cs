@@ -11,6 +11,7 @@ public class AppInvocable : BaseInvocable
         InvocationContext.AuthenticationCredentialsProviders.ToArray();
 
     protected EasyTranslateClient Client { get; }
+    
     public AppInvocable(InvocationContext invocationContext) : base(invocationContext)
     {
         Client = new();

@@ -1,3 +1,4 @@
+using RestSharp;
 using Apps.EasyTranslate.Constants;
 using Apps.EasyTranslate.Invocables;
 using Apps.EasyTranslate.Models.Dto.Generic;
@@ -11,7 +12,6 @@ using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
 using Newtonsoft.Json;
-using RestSharp;
 
 namespace Apps.EasyTranslate.Actions;
 

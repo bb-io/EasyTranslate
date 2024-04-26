@@ -11,9 +11,6 @@ public class FolderResponse
     
     [Display("Folder name")]
     public string Name { get; set; }
-    
-    [Display("Folder description")] 
-    public string? Description { get; set; }
 
     [Display("Created at")]
     public DateTime CreatedAt { get; set; }
@@ -28,11 +25,6 @@ public class FolderResponse
     {
         Id = dto.Id;
         Name = dto.Attributes["name"];
-        
-        if(dto.Attributes.TryGetValue("description", out string description))
-        {
-            Description = description;
-        }
         
         if(dto.Attributes.TryGetValue("created_at", out string createdAt))
         {

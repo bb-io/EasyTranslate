@@ -40,8 +40,7 @@ public class FolderActions(InvocationContext invocationContext) : AppInvocable(i
                 type = "project-folder",
                 attributes = new
                 {
-                    name = request.Name,
-                    description = request.Description ?? string.Empty
+                    name = request.Name
                 }
             }
         };
