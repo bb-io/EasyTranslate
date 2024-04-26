@@ -142,7 +142,7 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
         var dto = await Client.ExecuteWithJson<LibraryAutomationDto>(endpoint, Method.Post, body, Creds);
         return new LibraryAutomationResponse(dto);
     }
-
+    
     [Action("Add target languages to a library", Description = "Add target languages to a library for a team")]
     public async Task<LibraryResponse> AddTargetLanguages([ActionParameter] TargetLanguagesRequest request)
     {
@@ -152,7 +152,7 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
         {
             data = new
             {
-                type = "library_target_languages",
+                type = "library-language",
                 attributes = new
                 {
                     target_languages = request.TargetLanguages
@@ -160,19 +160,14 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
             }
         };
 
-        var dto = await Client.ExecuteWithJson<GetLibraryDto>(endpoint, Method.Post, body, Creds);
+        var dto = await Client.ExecuteWithJson<GetLibraryDto>(endpoint, Method.Put, body, Creds);
         return new LibraryResponse(dto.Data);
     }
     
     [Action("Remove target languages from a library", Description = "Remove target languages from a library for a team")]
-    public async Task<LibraryResponse> RemoveTargetLanguages([ActionParameter] TargetLanguagesRequest request)
+    public async Task<LibraryResponse> RemoveTargetLanguages([ActionParameter] RemoveTargetLanguagesRequest request)
     {
-        if (request.TargetLanguages.Count() > 1)
-        {
-            throw new InvalidOperationException("You can only remove one target language at a time");
-        }
-        
-        var targetLanguage = request.TargetLanguages.First();
+        var targetLanguage = request.TargetLanguage;
         string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/languages/{targetLanguage}";
         var dto = await Client.ExecuteWithJson<GetLibraryDto>(endpoint, Method.Delete, null, Creds);
         return new LibraryResponse(dto.Data);

@@ -84,7 +84,7 @@ public class EasyTranslateClient : RestClient
     
     public async Task<RestResponse> ExecuteRequest(EasyTranslateRequest request)
     {
-        var response = await ExecuteAsync(request.AddHeader("Accept", "text/event-stream"));
+        var response = await ExecuteAsync(request);
 
         if (!response.IsSuccessStatusCode)
             throw GetError(response);
