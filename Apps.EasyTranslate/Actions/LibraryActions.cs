@@ -62,7 +62,7 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
                 attributes = new
                 {
                     name = request.Name,
-                    description = request.Description,
+                    description = request.Description ?? string.Empty,
                     source_language = request.SourceLanguage,
                     type = request.Type,
                     target_languages = request.TargetLanguages,

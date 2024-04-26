@@ -1,5 +1,7 @@
+using System.Text;
 using RestSharp;
 using Apps.EasyTranslate.Constants;
+using Apps.EasyTranslate.Models.Dto;
 using Apps.EasyTranslate.Models.Responses;
 using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Utils.Extensions.Http;
@@ -92,7 +94,33 @@ public class EasyTranslateClient : RestClient
     
     private Exception GetError(RestResponse response)
     {
-        return new Exception($"Status code: {response.StatusCode}, Message: {response.Content}");
+        try
+        {
+            var error = JsonConvert.DeserializeObject<ErrorDto>(response.Content);
+            return new Exception($"Status code: {response.StatusCode}, Message: {BuildErrorMessage(error)}");
+        }
+        catch (Exception e)
+        {        
+            return new Exception($"Status code: {response.StatusCode}, Message: {response.Content}");
+        }
+    }
+    
+    private string BuildErrorMessage(ErrorDto error)
+    {
+        var stringBuilder = new StringBuilder();
+        
+        if (error.Data is not null)
+            stringBuilder.AppendLine(error.Data.Message);
+
+        if (error.Errors is not null)
+        {
+            foreach (var targetLanguage in error.Errors.TargetLanguages)
+            {
+                stringBuilder.AppendLine(targetLanguage);
+            }
+        }
+        
+        return stringBuilder.ToString();
     }
 
     public string BuildUrl(AuthenticationCredentialsProvider[] creds)
