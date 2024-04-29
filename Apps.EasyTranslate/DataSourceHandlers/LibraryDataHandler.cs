@@ -18,7 +18,7 @@ public class LibraryDataHandler(InvocationContext invocationContext, [ActionPara
             throw new InvalidOperationException("You should input a team name first");
         }
         
-        var libraryActions = new LibraryActions(InvocationContext);
+        var libraryActions = new LibraryActions(InvocationContext, null);
         var libraries = await libraryActions.GetAllLibraries(request);
         
         return libraries.Libraries
