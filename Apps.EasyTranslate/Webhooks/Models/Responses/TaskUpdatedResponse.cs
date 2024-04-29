@@ -4,7 +4,7 @@ using Blackbird.Applications.Sdk.Common;
 
 namespace Apps.EasyTranslate.Webhooks.Models.Responses;
 
-public class StringKeyResponse
+public class TaskUpdatedResponse
 {
     [Display("String key ID")]
     public string Id { get; set; }
@@ -31,7 +31,7 @@ public class StringKeyResponse
     [Display("Revision status")]
     public string RevisionStatus { get; set; }
 
-    public StringKeyResponse(Data<TaskUpdatedAttributes> data)
+    public TaskUpdatedResponse(Data<TaskUpdatedAttributes> data)
     {
         Id = data.Id;
         TargetContentUrl = data.Attributes.TargetContent;

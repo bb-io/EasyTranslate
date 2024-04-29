@@ -22,13 +22,13 @@ public class WebhookList : AppInvocable
 
     #region Webhooks
 
-    [Webhook("On string key updated", typeof(StringKeyUpdatedHandler), Description = "Triggered when a string key changed")]
-    public async Task<WebhookResponse<StringKeyResponse>> OnTermChanged(WebhookRequest webhookRequest)
+    [Webhook("Task updated", typeof(TaskUpdatedHandler), Description = "Triggered when a task updated")]
+    public async Task<WebhookResponse<TaskUpdatedResponse>> OnTaskUpdated(WebhookRequest webhookRequest)
     {
-        var response = HandleWebhook<StringKeyUpdatedPayload>(webhookRequest);
-        return new WebhookResponse<StringKeyResponse>
+        var response = HandleWebhook<TaskUpdatedPayload>(webhookRequest);
+        return new WebhookResponse<TaskUpdatedResponse>
         {
-            Result = new StringKeyResponse(response.Data)
+            Result = new TaskUpdatedResponse(response.Data)
         };
     }
 
