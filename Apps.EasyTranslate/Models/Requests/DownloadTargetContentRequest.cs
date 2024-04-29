@@ -4,8 +4,8 @@ namespace Apps.EasyTranslate.Models.Requests;
 
 public class DownloadTargetContentRequest
 {
-    [Display("Target content URL")]
-    public string TargetContentUrl { get; set; }
+    [Display("Content URL")]
+    public string ContentUrl { get; set; }
 
     [Display("File name")]
     public string? FileName { get; set; }

@@ -23,7 +23,7 @@ public class TaskDataHandler(InvocationContext invocationContext, [ActionParamet
             throw new InvalidOperationException("You should first select a project");
         }
         
-        var taskActions = new TaskActions(InvocationContext, null);
+        var taskActions = new TaskActions(InvocationContext);
         var tasks = await taskActions.GetAllTasks(request);
         
         return tasks.Tasks
