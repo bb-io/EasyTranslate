@@ -63,25 +63,6 @@ public class WebhookList : AppInvocable
         return data;
     }
 
-    public async Task<FileReference> DownloadTargetContentAsync(StringKeyUpdatedPayload payload)
-    {
-        var token = await Client.GetToken(Creds);
-
-        var request = new EasyTranslateRequest(new()
-        {
-            Url = payload.Data.Attributes.TargetContent,
-            Method = Method.Get
-        }, token);
-
-        var response = await Client.ExecuteRequest(request);
-
-        var bytes = response.RawBytes ?? throw new WebException("No content found");
-        var memoryStream = new MemoryStream(bytes);
-
-        var fileReference = await fileManagementClient.UploadAsync(memoryStream, ContentType.Json, payload.Data.Attributes.FileName);
-        return fileReference;
-    }
-
     private async Task LogAsync<T>(T data)
         where T : class
     {
