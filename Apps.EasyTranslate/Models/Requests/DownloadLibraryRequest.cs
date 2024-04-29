@@ -9,9 +9,9 @@ public class DownloadLibraryRequest : LibraryRequest
     [Display("Languages"), DataSource(typeof(LibraryLanguagesDataHandler))]
     public IEnumerable<string> Languages { get; set; }
 
-    [Display("Exclude empty translations")]
-    public bool ExcludeEmptyTranslations { get; set; }
+    [Display("Exclude empty translations", Description = "By default: false")]
+    public bool? ExcludeEmptyTranslations { get; set; }
 
-    [Display("Unpack strings")]
-    public bool UnpackStrings { get; set; }
+    [Display("Unpack strings", Description = "By default: false")]
+    public bool? UnpackStrings { get; set; }
 }

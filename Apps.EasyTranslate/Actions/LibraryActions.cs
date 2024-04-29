@@ -193,8 +193,8 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
                     languages = request.Languages,
                     options = new
                     {
-                        exclude_empty_translations = request.ExcludeEmptyTranslations,
-                        unpack_strings = request.UnpackStrings
+                        exclude_empty_translations = request.ExcludeEmptyTranslations ?? false,
+                        unpack_strings = request.UnpackStrings ?? false
                     }
                 }
             }
@@ -206,7 +206,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
         var memoryStream = new MemoryStream(bytes);
 
         var library = await GetLibrary(request);
-        var fileReference = await fileManagementClient.UploadAsync(memoryStream, ContentType.Json, $"{library.Name}.json");
+        var fileReference = await fileManagementClient.UploadAsync(memoryStream, ContentType.GZip, $"{library.Name}.zip");
         return new LibraryDownloadResponse()
         {
             File = fileReference
