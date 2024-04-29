@@ -10,6 +10,7 @@ using Apps.EasyTranslate.Models.Dto;
 
 namespace Apps.EasyTranslate.Actions;
 
+[ActionList]
 public class TranslationStringActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
     [Action("Get translation strings", Description = "Get all translation strings for specific library")]
