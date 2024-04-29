@@ -16,11 +16,8 @@ namespace Apps.EasyTranslate.Webhooks;
 [WebhookList]
 public class WebhookList : AppInvocable
 {
-    private readonly IFileManagementClient fileManagementClient;
-
-    public WebhookList(InvocationContext invocationContext, IFileManagementClient fileManagementClient) : base(invocationContext)
+    public WebhookList(InvocationContext invocationContext) : base(invocationContext)
     {
-        this.fileManagementClient = fileManagementClient;
     }
 
     #region Webhooks
@@ -32,13 +29,9 @@ public class WebhookList : AppInvocable
         {
             var response = HandleWebhook<StringKeyUpdatedPayload>(webhookRequest);
 
-            var fileReference = await DownloadTargetContentAsync(response);
             return new WebhookResponse<StringKeyResponse>
             {
                 Result = new StringKeyResponse(response.Data)
-                {
-                    TargetContent = fileReference
-                }
             };
         }
         catch (Exception ex)
