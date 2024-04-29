@@ -72,13 +72,14 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
                         {
                             language = request.MenuLanguage,
                             currency = request.MenuCurrency,
-                            button = request.MenuButton
+                            button = request.MenuButton,
                         },
                         terms = new
                         {
                             privacy_policy = new
                             {
-                                text = request.PrivacyPolicyText
+                                text = request.PrivacyPolicyText,
+                                title = request.SummaryTitle,
                             }
                         },
                         summary = new

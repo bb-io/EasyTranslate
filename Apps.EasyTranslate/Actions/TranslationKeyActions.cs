@@ -25,8 +25,8 @@ public class TranslationKeyActions(InvocationContext invocationContext) : AppInv
     public async Task<TranslationKeyResponse> GetTranslationKey([ActionParameter] TranslationKeyRequest request)
     {
         string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/keys/{request.KeyId}";
-        var dto = await Client.ExecuteWithJson<GetTranslationKeysDto>(endpoint, Method.Get, null, Creds);
-        return new TranslationKeyResponse(dto.Data.First());
+        var dto = await Client.ExecuteWithJson<GetTranslationKeyDto>(endpoint, Method.Get, null, Creds);
+        return new TranslationKeyResponse(dto.Data);
     }
     
     [Action("Create translation keys", Description = "Create translation key for specified library")]
