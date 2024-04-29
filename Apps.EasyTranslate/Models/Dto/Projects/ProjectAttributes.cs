@@ -8,6 +8,9 @@ public class ProjectAttributes
 {
     [JsonProperty("name")]
     public string Name { get; set; }
+
+    [JsonProperty("source_content")]
+    public string SourceContent { get; set; }
     
     [JsonProperty("source_language")]
     public string SourceLanguage { get; set; }

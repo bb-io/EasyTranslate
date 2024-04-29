@@ -13,6 +13,7 @@ public class ProjectResponse
     {
         Id = data.Id;
         Name = data.Attributes.Name;
+        SourceContentUrl = data.Attributes.SourceContent;
         SourceLanguage = data.Attributes.SourceLanguage;
         TargetLanguages = data.Attributes.TargetLanguages.ToList();
         Status = data.Attributes.Status;
@@ -27,7 +28,10 @@ public class ProjectResponse
     public string Id { get; set; }
     
     public string Name { get; set; }
-    
+
+    [Display("Source content URL")]
+    public string SourceContentUrl { get; set; }
+
     [Display("Source language")]
     public string SourceLanguage { get; set; }
     
