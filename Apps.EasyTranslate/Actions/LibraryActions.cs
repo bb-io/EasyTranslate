@@ -179,10 +179,28 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
     }
 
     [Action("Download library", Description = "Download a library for a team")]
-    public async Task<LibraryDownloadResponse> DownloadLibrary([ActionParameter] LibraryRequest request)
+    public async Task<LibraryDownloadResponse> DownloadLibrary([ActionParameter] DownloadLibraryRequest request)
     {
         string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/download";
-        RestResponse response = await Client.ExecuteWithJson(endpoint, Method.Get, null, Creds);
+
+        var body = new
+        {
+            data = new
+            {
+                type = "library-download",
+                attributes = new
+                {
+                    languages = request.Languages,
+                    options = new
+                    {
+                        exclude_empty_translations = request.ExcludeEmptyTranslations,
+                        unpack_strings = request.UnpackStrings
+                    }
+                }
+            }
+        };
+
+        var response = await Client.ExecuteWithJson(endpoint, Method.Post, body, Creds);
 
         var bytes = response.RawBytes ?? throw new Exception("Failed to download library, returned an empty response");
         var memoryStream = new MemoryStream(bytes);
