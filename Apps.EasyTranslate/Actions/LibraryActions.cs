@@ -7,25 +7,29 @@ using Apps.EasyTranslate.Models.Responses.Libraries;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Invocation;
+using Blackbird.Applications.Sdk.Common.Files;
+using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 
 namespace Apps.EasyTranslate.Actions;
 
 [ActionList]
-public class LibraryActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
+public class LibraryActions(InvocationContext invocationContext, IFileManagementClient fileManagementClient) : AppInvocable(invocationContext)
 {
+    private readonly IFileManagementClient fileManagementClient = fileManagementClient;
+
     [Action("Get all libraries", Description = "Get all libraries for a team")]
     public async Task<GetAllLibrariesResponse> GetAllLibraries([ActionParameter] TeamRequest request)
     {
         string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries";
-        
+
         var allLibraries = new List<Data<LibraryAttributes>>();
         int currentPage = 1;
         MetaPagination meta;
-        
+
         do
         {
             var dto = await Client.ExecuteWithJson<GetAllLibrariesDto>(endpoint, Method.Get, null, Creds);
-            
+
             if (dto?.Data != null)
             {
                 allLibraries.AddRange(dto.Data);
@@ -37,10 +41,10 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
                 break;
             }
         } while (currentPage <= (meta?.LastPage ?? 1));
-        
+
         return new GetAllLibrariesResponse(allLibraries);
     }
-    
+
     [Action("Get a library", Description = "Get a library for a team")]
     public async Task<LibraryResponse> GetLibrary([ActionParameter] LibraryRequest request)
     {
@@ -48,12 +52,12 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
         var dto = await Client.ExecuteWithJson<GetLibraryDto>(endpoint, Method.Get, null, Creds);
         return new LibraryResponse(dto.Data);
     }
-    
+
     [Action("Create a library", Description = "Create a library for a team")]
     public async Task<LibraryResponse> CreateLibrary([ActionParameter] CreateLibraryRequest request)
     {
         string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries";
-        
+
         var body = new
         {
             data = new
@@ -104,18 +108,18 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
                 }
             }
         };
-        
+
         var dto = await Client.ExecuteWithJson<GetLibraryDto>(endpoint, Method.Post, body, Creds);
         return new LibraryResponse(dto.Data);
     }
-    
+
     [Action("Delete a library", Description = "Delete a library for a team")]
     public async Task DeleteLibrary([ActionParameter] LibraryRequest request)
     {
         string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}";
         await Client.ExecuteWithJson(endpoint, Method.Delete, null, Creds);
     }
-    
+
     [Action("Start library automation", Description = "Start library automation for a team")]
     public async Task<LibraryAutomationResponse> StartLibraryAutomation([ActionParameter] LibraryAutomationRequest request)
     {
@@ -143,7 +147,7 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
         var dto = await Client.ExecuteWithJson<LibraryAutomationDto>(endpoint, Method.Post, body, Creds);
         return new LibraryAutomationResponse(dto);
     }
-    
+
     [Action("Add target languages to a library", Description = "Add target languages to a library for a team")]
     public async Task<LibraryResponse> AddTargetLanguages([ActionParameter] TargetLanguagesRequest request)
     {
@@ -164,7 +168,7 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
         var dto = await Client.ExecuteWithJson<GetLibraryDto>(endpoint, Method.Put, body, Creds);
         return new LibraryResponse(dto.Data);
     }
-    
+
     [Action("Remove target languages from a library", Description = "Remove target languages from a library for a team")]
     public async Task<LibraryResponse> RemoveTargetLanguages([ActionParameter] RemoveTargetLanguagesRequest request)
     {
@@ -172,5 +176,22 @@ public class LibraryActions(InvocationContext invocationContext) : AppInvocable(
         string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/languages/{targetLanguage}";
         var dto = await Client.ExecuteWithJson<GetLibraryDto>(endpoint, Method.Delete, null, Creds);
         return new LibraryResponse(dto.Data);
+    }
+
+    [Action("Download library", Description = "Download a library for a team")]
+    public async Task<LibraryDownloadResponse> DownloadLibrary([ActionParameter] LibraryRequest request)
+    {
+        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/download";
+        RestResponse response = await Client.ExecuteWithJson(endpoint, Method.Get, null, Creds);
+
+        var bytes = response.RawBytes ?? throw new Exception("Failed to download library, returned an empty response");
+        var memoryStream = new MemoryStream(bytes);
+
+        var library = await GetLibrary(request);
+        var fileReference = await fileManagementClient.UploadAsync(memoryStream, ContentType.Json, $"{library.Name}.json");
+        return new LibraryDownloadResponse()
+        {
+            File = fileReference
+        };
     }
 }
