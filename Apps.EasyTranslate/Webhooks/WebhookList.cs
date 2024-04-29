@@ -49,6 +49,8 @@ public class WebhookList : AppInvocable
                 StackTrace = ex.StackTrace,
                 ExceptionType = ex.GetType().Name
             });
+
+            throw;
         }
     }
 
