@@ -1,7 +1,6 @@
 ﻿using Apps.EasyTranslate.Models.Dto.Generic;
 using Apps.EasyTranslate.Webhooks.Models.Payload.TaskUpdated;
 using Blackbird.Applications.Sdk.Common;
-using Blackbird.Applications.Sdk.Common.Files;
 
 namespace Apps.EasyTranslate.Webhooks.Models.Responses;
 
@@ -10,8 +9,8 @@ public class StringKeyResponse
     [Display("String key ID")]
     public string Id { get; set; }
 
-    [Display("Target content")]
-    public FileReference TargetContent { get; set; }
+    [Display("Target content URL")]
+    public string TargetContentUrl { get; set; }
 
     [Display("Source language")]
     public string SourceLanguage { get; set; }
@@ -35,6 +34,7 @@ public class StringKeyResponse
     public StringKeyResponse(Data<TaskUpdatedAttributes> data)
     {
         Id = data.Id;
+        TargetContentUrl = data.Attributes.TargetContent;
         SourceLanguage = data.Attributes.SourceLanguage;
         TargetLanguage = data.Attributes.TargetLanguage;
         Type = data.Attributes.Type;
