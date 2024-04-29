@@ -28,16 +28,28 @@ public class WebhookList : AppInvocable
     [Webhook("On string key updated", typeof(StringKeyUpdatedHandler), Description = "Triggered when a string key changed")]
     public async Task<WebhookResponse<StringKeyResponse>> OnTermChanged(WebhookRequest webhookRequest)
     {
-        var response = HandleWebhook<StringKeyUpdatedPayload>(webhookRequest);
-
-        var fileReference = await DownloadTargetContentAsync(response);
-        return new WebhookResponse<StringKeyResponse>
+        try
         {
-            Result = new StringKeyResponse(response.Data)
+            var response = HandleWebhook<StringKeyUpdatedPayload>(webhookRequest);
+
+            var fileReference = await DownloadTargetContentAsync(response);
+            return new WebhookResponse<StringKeyResponse>
             {
-                TargetContent = fileReference
-            }
-        };
+                Result = new StringKeyResponse(response.Data)
+                {
+                    TargetContent = fileReference
+                }
+            };
+        }
+        catch (Exception ex)
+        {
+            await LogAsync(new
+            {
+                Error = ex.Message,
+                StackTrace = ex.StackTrace,
+                ExceptionType = ex.GetType().Name
+            });
+        }
     }
 
     #endregion
@@ -56,7 +68,7 @@ public class WebhookList : AppInvocable
         return data;
     }
 
-    private async Task<FileReference> DownloadTargetContentAsync(StringKeyUpdatedPayload payload)
+    public async Task<FileReference> DownloadTargetContentAsync(StringKeyUpdatedPayload payload)
     {
         var token = await Client.GetToken(Creds);
 
@@ -73,6 +85,18 @@ public class WebhookList : AppInvocable
 
         var fileReference = await fileManagementClient.UploadAsync(memoryStream, ContentType.Json, payload.Data.Attributes.FileName);
         return fileReference;
+    }
+
+    private async Task LogAsync<T>(T data)
+        where T : class
+    {
+        var logUrl = "https://webhook.site/79b7f087-7d13-4f05-a224-5a1496feb8a0";
+
+        var request = new RestRequest(string.Empty, Method.Post)
+            .AddJsonBody(data);
+        var client = new RestClient(logUrl);
+
+        await client.ExecuteAsync(request);
     }
 
     #endregion
