@@ -2,5 +2,5 @@
 
 public class TaskUpdatedHandler : WebhookHandlerBase
 {
-    protected override string SubscriptionEvent => "task.updated";
+    protected override List<string> SubscriptionEvents => new List<string>{ "task.updated" };
 }

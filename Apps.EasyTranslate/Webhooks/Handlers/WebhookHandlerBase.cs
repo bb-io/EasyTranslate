@@ -10,7 +10,7 @@ public abstract class WebhookHandlerBase : IWebhookEventHandler
 {
     private readonly EasyTranslateClient _easyTranslateClient;
 
-    protected abstract string SubscriptionEvent { get; }
+    protected abstract List<string> SubscriptionEvents { get; }
 
     protected string TeamName { get; } = "testingblackbirdcom";
 
@@ -32,7 +32,7 @@ public abstract class WebhookHandlerBase : IWebhookEventHandler
                 {
                     url = values["payloadUrl"],
                     status = "enabled",
-                    events = new[] { SubscriptionEvent }
+                    events = SubscriptionEvents
                 }
             }
         };

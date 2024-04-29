@@ -1,5 +1,7 @@
 ﻿using Apps.EasyTranslate.Api;
 using Apps.EasyTranslate.Invocables;
+using Apps.EasyTranslate.Models.Dto.Projects;
+using Apps.EasyTranslate.Models.Responses.Projects;
 using Apps.EasyTranslate.Webhooks.Handlers;
 using Apps.EasyTranslate.Webhooks.Models.Payload.TaskUpdated;
 using Apps.EasyTranslate.Webhooks.Models.Responses;
@@ -22,13 +24,23 @@ public class WebhookList : AppInvocable
 
     #region Webhooks
 
-    [Webhook("Task updated", typeof(TaskUpdatedHandler), Description = "Triggered when a task updated")]
+    [Webhook("On task updated", typeof(TaskUpdatedHandler), Description = "Triggered when a task updated")]
     public async Task<WebhookResponse<TaskUpdatedResponse>> OnTaskUpdated(WebhookRequest webhookRequest)
     {
         var response = HandleWebhook<TaskUpdatedPayload>(webhookRequest);
         return new WebhookResponse<TaskUpdatedResponse>
         {
             Result = new TaskUpdatedResponse(response.Data)
+        };
+    }
+
+    [Webhook("On project updated", typeof(ProjectUpdatedHandler), Description = "Triggered when a project updated")]
+    public async Task<WebhookResponse<ProjectResponse>> OnProjectUpdated(WebhookRequest webhookRequest)
+    {
+        var response = HandleWebhook<ProjectDto>(webhookRequest);
+        return new WebhookResponse<ProjectResponse>
+        {
+            Result = new ProjectResponse(response.Data)
         };
     }
 
