@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Apps.EasyTranslate.Models.Dto.Generic;
+using Newtonsoft.Json;
 
 namespace Apps.EasyTranslate.Models.Dto.Webhooks;
 
 public class GetWebhooksDto
 {
     [JsonProperty("data")]
-    public List<WebhookDto> Data { get; set; }
+    public Data<WebhooksAttributes>[] Data { get; set; }
 }

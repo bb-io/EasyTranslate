@@ -1,4 +1,5 @@
 ﻿using Apps.EasyTranslate.Api;
+using Apps.EasyTranslate.Models.Dto.Generic;
 using Apps.EasyTranslate.Models.Dto.Webhooks;
 using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Webhooks;
@@ -48,7 +49,7 @@ public abstract class WebhookHandlerBase : IWebhookEventHandler
             return;
         }
 
-        var endpoint = $"/laas/api/v1/teams/{TeamName}/webhook-endpoints/{webhook.Data.Id}";
+        var endpoint = $"/laas/api/v1/teams/{TeamName}/webhook-endpoints/{webhook.Id}";
         await _easyTranslateClient.ExecuteWithJson(endpoint, RestSharp.Method.Delete, null, authenticationCredentialsProvider.ToArray());
     }
 
@@ -58,8 +59,8 @@ public abstract class WebhookHandlerBase : IWebhookEventHandler
         return await _easyTranslateClient.ExecuteWithJson<GetWebhooksDto>(endpoint, RestSharp.Method.Get, null, authenticationCredentialsProvider.ToArray());
     }
 
-    private WebhookDto? GetWebhookBasedOnPayloadUrl(string payloadUrl, GetWebhooksDto dto)
+    private Data<WebhooksAttributes>? GetWebhookBasedOnPayloadUrl(string payloadUrl, GetWebhooksDto dto)
     {
-        return dto.Data.FirstOrDefault(x => x.Data.Attributes.Url == payloadUrl);
+        return dto.Data.FirstOrDefault(x => x.Attributes.Url == payloadUrl);
     }
 }
