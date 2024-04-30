@@ -49,6 +49,36 @@ public class WebhookList : AppInvocable
             Result = new StringKeyUpdatedResponses(response)
         });
     }
+    
+    [Webhook("On project approval needed", typeof(ProjectApprovalNeededHandler), Description = "Triggered when a project approval needed")]
+    public Task<WebhookResponse<ProjectResponse>> OnProjectApprovalNeeded(WebhookRequest webhookRequest)
+    {
+        var response = HandleWebhook<ProjectDto>(webhookRequest);
+        return Task.FromResult(new WebhookResponse<ProjectResponse>
+        {
+            Result = new ProjectResponse(response.Data)
+        });
+    }
+    
+    [Webhook("On project price declined", typeof(ProjectPriceDeclinedHandler), Description = "Triggered when a project price declined")]
+    public Task<WebhookResponse<ProjectResponse>> OnProjectPriceDeclined(WebhookRequest webhookRequest)
+    {
+        var response = HandleWebhook<ProjectDto>(webhookRequest);
+        return Task.FromResult(new WebhookResponse<ProjectResponse>
+        {
+            Result = new ProjectResponse(response.Data)
+        });
+    }
+    
+    [Webhook("On project cancelled", typeof(ProjectCancelledHandler), Description = "Triggered when a project cancelled by customer")]
+    public Task<WebhookResponse<ProjectResponse>> OnProjectCancelled(WebhookRequest webhookRequest)
+    {
+        var response = HandleWebhook<ProjectDto>(webhookRequest);
+        return Task.FromResult(new WebhookResponse<ProjectResponse>
+        {
+            Result = new ProjectResponse(response.Data)
+        });
+    }
 
     #endregion
 
