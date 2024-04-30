@@ -125,14 +125,14 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
     {
         string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/start-automation";
 
-        var attributes = new Dictionary<string, object>
+        var attributes = new Dictionary<string, List<string>>
         {
-            { "target_languages", request.TargetLanguages }
+            { "target_languages", request.TargetLanguages.ToList() }
         };
 
         if (request.KeyNames != null && request.KeyNames.Any())
         {
-            attributes.Add("key_names", request.KeyNames);
+            attributes.Add("key_names", request.KeyNames.ToList());
         }
 
         var body = new
