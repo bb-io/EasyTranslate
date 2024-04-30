@@ -30,7 +30,7 @@ public class WebhookList : AppInvocable
         });
     }
 
-    [Webhook("On project price accepted", typeof(ProjectUpdatedHandler), Description = "Triggered when a project price accepted")]
+    [Webhook("On project price accepted", typeof(ProjectPriceAcceptedHandler), Description = "Triggered when a project price accepted")]
     public Task<WebhookResponse<ProjectResponse>> OnProjectUpdated(WebhookRequest webhookRequest)
     {
         var response = HandleWebhook<ProjectDto>(webhookRequest);

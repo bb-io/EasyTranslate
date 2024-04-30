@@ -7,6 +7,7 @@ public static class CredsNames
     public const string ClientSecret = "client_secret";
     public const string Username = "username";
     public const string Password = "password";
+    public const string Teamname = "teamname";
     public const string GrantType = "grant_type";
     public const string Scope = "scope";
 }

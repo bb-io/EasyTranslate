@@ -27,7 +27,11 @@ public class ConnectionDefinition : IConnectionDefinition
         new(CredsNames.Password)
         {
             DisplayName = "Password", Description = "Password of the User who will perform the actions", Sensitive = true
-        }
+        },
+        new(CredsNames.Teamname)
+        {
+            DisplayName = "Teamname", Description = "Teamname of the User who will perform the actions"
+        },
     };
     
     public IEnumerable<ConnectionPropertyGroup> ConnectionPropertyGroups => new List<ConnectionPropertyGroup>
@@ -77,6 +81,13 @@ public class ConnectionDefinition : IConnectionDefinition
             AuthenticationCredentialsRequestLocation.None,
             hostKeyValue.Key,
             hostKeyValue.Value
+        );
+        
+        var teamnameKeyValue = values.First(v => v.Key == CredsNames.Teamname);
+        yield return new AuthenticationCredentialsProvider(
+            AuthenticationCredentialsRequestLocation.None,
+            teamnameKeyValue.Key,
+            teamnameKeyValue.Value
         );
     }
 }

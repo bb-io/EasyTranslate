@@ -1,27 +1,27 @@
 ﻿using Apps.EasyTranslate.Api;
+using Apps.EasyTranslate.Constants;
+using Apps.EasyTranslate.Invocables;
 using Apps.EasyTranslate.Models.Dto.Generic;
 using Apps.EasyTranslate.Models.Dto.Webhooks;
 using Blackbird.Applications.Sdk.Common.Authentication;
+using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Common.Webhooks;
+using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 
 namespace Apps.EasyTranslate.Webhooks.Handlers;
 
-public abstract class WebhookHandlerBase : IWebhookEventHandler
+public abstract class WebhookHandlerBase : AppInvocable, IWebhookEventHandler
 {
-    private readonly EasyTranslateClient _easyTranslateClient;
-
-    protected abstract List<string> SubscriptionEvents { get; }
-
-    protected string TeamName { get; } = "testingblackbirdcom";
-
-    protected WebhookHandlerBase()
+    protected WebhookHandlerBase(InvocationContext invocationContext) : base(invocationContext)
     {
-        _easyTranslateClient = new EasyTranslateClient();
     }
+    
+    protected abstract List<string> SubscriptionEvents { get; }
 
     public async Task SubscribeAsync(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProvider, Dictionary<string, string> values)
     {
-        var endpoint = $"/laas/api/v1/teams/{TeamName}/webhook-endpoints";
+        var teamName = Creds.Get(CredsNames.Teamname).Value;
+        var endpoint = $"/laas/api/v1/teams/{teamName}/webhook-endpoints";
 
         var body = new
         {
@@ -37,7 +37,7 @@ public abstract class WebhookHandlerBase : IWebhookEventHandler
             }
         };
 
-        await _easyTranslateClient.ExecuteWithJson(endpoint, RestSharp.Method.Post, body, authenticationCredentialsProvider.ToArray());
+        await Client.ExecuteWithJson(endpoint, RestSharp.Method.Post, body, authenticationCredentialsProvider.ToArray());
     }
 
     public async Task UnsubscribeAsync(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProvider, Dictionary<string, string> values)
@@ -49,14 +49,16 @@ public abstract class WebhookHandlerBase : IWebhookEventHandler
             return;
         }
 
-        var endpoint = $"/laas/api/v1/teams/{TeamName}/webhook-endpoints/{webhook.Id}";
-        await _easyTranslateClient.ExecuteWithJson(endpoint, RestSharp.Method.Delete, null, authenticationCredentialsProvider.ToArray());
+        var teamName = Creds.Get(CredsNames.Teamname).Value;
+        var endpoint = $"/laas/api/v1/teams/{teamName}/webhook-endpoints/{webhook.Id}";
+        await Client.ExecuteWithJson(endpoint, RestSharp.Method.Delete, null, authenticationCredentialsProvider.ToArray());
     }
 
     private async Task<GetWebhooksDto> GetWebhooksAsync(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProvider)
     {
-        var endpoint = $"/laas/api/v1/teams/{TeamName}/webhook-endpoints";
-        return await _easyTranslateClient.ExecuteWithJson<GetWebhooksDto>(endpoint, RestSharp.Method.Get, null, authenticationCredentialsProvider.ToArray());
+        var teamName = Creds.Get(CredsNames.Teamname).Value;
+        var endpoint = $"/laas/api/v1/teams/{teamName}/webhook-endpoints";
+        return await Client.ExecuteWithJson<GetWebhooksDto>(endpoint, RestSharp.Method.Get, null, authenticationCredentialsProvider.ToArray());
     }
 
     private Data<WebhooksAttributes>? GetWebhookBasedOnPayloadUrl(string payloadUrl, GetWebhooksDto dto)
