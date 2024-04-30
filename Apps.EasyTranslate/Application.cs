@@ -18,7 +18,12 @@ public class Application : IApplication, ICategoryProvider
 
     public IEnumerable<ApplicationCategory> Categories
     {
-        get => new[] { ApplicationCategory.TranslationBusinessManagement, ApplicationCategory.MachineTranslationAndMtqe  };
+        get => new[]
+        {
+            ApplicationCategory.TranslationBusinessManagement, 
+            ApplicationCategory.MachineTranslationAndMtqe,
+            ApplicationCategory.ArtificialIntelligence
+        };
         set { }
     }
 }
