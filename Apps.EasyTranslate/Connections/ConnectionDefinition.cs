@@ -30,7 +30,7 @@ public class ConnectionDefinition : IConnectionDefinition
         },
         new(CredsNames.Teamname)
         {
-            DisplayName = "Teamname", Description = "Teamname of the User who will perform the actions"
+            DisplayName = "Team name", Description = "Team name of which the user is a member of"
         },
     };
     
