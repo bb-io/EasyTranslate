@@ -7,19 +7,25 @@ using Blackbird.Applications.Sdk.Common.Invocation;
 
 namespace Apps.EasyTranslate.DataSourceHandlers;
 
-public class LibraryDataHandler(InvocationContext invocationContext)
+public class LanguagesDataHandler(InvocationContext invocationContext, [ActionParameter] LibraryRequest request)
     : AppInvocable(invocationContext), IAsyncDataSourceHandler
 {
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(request.LibraryId))
+        {
+            throw new InvalidOperationException("You should select a library first");
+        }
+        
         var libraryActions = new LibraryActions(InvocationContext, null);
         var libraries = await libraryActions.GetAllLibraries();
         
         return libraries.Libraries
+            .SelectMany(x => x.Languages)
             .Where(x => context.SearchString == null ||
-                        x.Name.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
+                        x.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
             .Take(20)
-            .ToDictionary(x => x.Id, x => x.Name);
+            .ToDictionary(x => x, x => x);
     }
 }
