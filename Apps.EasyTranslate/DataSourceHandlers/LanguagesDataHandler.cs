@@ -19,11 +19,10 @@ public class LanguagesDataHandler(InvocationContext invocationContext, [ActionPa
         }
         
         var libraryActions = new LibraryActions(InvocationContext, null);
-        var libraries = await libraryActions.GetAllLibraries();
+        var libraries = await libraryActions.GetLibrary(request);
         
-        return libraries.Libraries
-            .SelectMany(x => x.Languages)
-            .Distinct()
+        return libraries
+            .Languages
             .Where(x => context.SearchString == null ||
                         x.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
             .Take(20)
