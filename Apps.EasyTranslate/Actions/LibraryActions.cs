@@ -7,7 +7,6 @@ using Apps.EasyTranslate.Models.Responses.Libraries;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Invocation;
-using Blackbird.Applications.Sdk.Common.Files;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 
 namespace Apps.EasyTranslate.Actions;
@@ -45,7 +44,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
         return new GetAllLibrariesResponse(allLibraries);
     }
 
-    [Action("Get a library", Description = "Get a library for a team")]
+    [Action("Get library", Description = "Get a library for a team")]
     public async Task<LibraryResponse> GetLibrary([ActionParameter] LibraryRequest request)
     {
         string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}";
@@ -53,7 +52,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
         return new LibraryResponse(dto.Data);
     }
 
-    [Action("Create a library", Description = "Create a library for a team")]
+    [Action("Create library", Description = "Create a library for a team")]
     public async Task<LibraryResponse> CreateLibrary([ActionParameter] CreateLibraryRequest request)
     {
         string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries";
@@ -113,7 +112,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
         return new LibraryResponse(dto.Data);
     }
 
-    [Action("Delete a library", Description = "Delete a library for a team")]
+    [Action("Delete library", Description = "Delete a library for a team")]
     public async Task DeleteLibrary([ActionParameter] LibraryRequest request)
     {
         string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}";
@@ -148,7 +147,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
         return new LibraryAutomationResponse(dto);
     }
 
-    [Action("Add target languages to a library", Description = "Add target languages to a library for a team")]
+    [Action("Add target languages to library", Description = "Add target languages to a library for a team")]
     public async Task<LibraryResponse> AddTargetLanguages([ActionParameter] TargetLanguagesRequest request)
     {
         string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/languages";
@@ -169,7 +168,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
         return new LibraryResponse(dto.Data);
     }
 
-    [Action("Remove target languages from a library", Description = "Remove target languages from a library for a team")]
+    [Action("Remove target languages from library", Description = "Remove target languages from a library for a team")]
     public async Task<LibraryResponse> RemoveTargetLanguages([ActionParameter] RemoveTargetLanguagesRequest request)
     {
         var targetLanguage = request.TargetLanguage;

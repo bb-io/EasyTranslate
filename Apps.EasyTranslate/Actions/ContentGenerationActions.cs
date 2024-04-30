@@ -13,7 +13,7 @@ namespace Apps.EasyTranslate.Actions;
 [ActionList]
 public class ContentGenerationActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
-    [Action("Create content", Description = "Create content")]
+    [Action("Create content", Description = "Create content based on provided prompt and settings")]
     public async Task<CreateContentResponse> CreateContentAsync(CreateContentRequest request)
     {
         var token = await Client.GetToken(Creds); 

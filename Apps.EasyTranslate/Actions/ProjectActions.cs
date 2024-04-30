@@ -19,7 +19,7 @@ namespace Apps.EasyTranslate.Actions;
 public class ProjectActions(InvocationContext invocationContext, IFileManagementClient fileManagementClient)
     : AppInvocable(invocationContext)
 {
-    [Action("Fetch all projects", Description = "Fetch all projects for a team")]
+    [Action("Get all projects", Description = "Get all projects for a team")]
     public async Task<FetchAllProjectsResponse> FetchAllProjects([ActionParameter] FetchAllProjectsRequest fetchRequest)
     {
         string baseEndpoint = $"{ApiEndpoints.ProjectBase}/teams/[teamname]/projects";

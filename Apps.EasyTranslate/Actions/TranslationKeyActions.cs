@@ -29,7 +29,7 @@ public class TranslationKeyActions(InvocationContext invocationContext) : AppInv
         return new TranslationKeyResponse(dto.Data);
     }
     
-    [Action("Create translation keys", Description = "Create translation key for specified library")]
+    [Action("Create translation keys", Description = "Create translation keys for specified library")]
     public async Task<TranslationKeysResponse> CreateTranslationKeys([ActionParameter] CreateTranslationKeysRequest request)
     {
         string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/keys";
