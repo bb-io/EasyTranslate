@@ -1,17 +1,13 @@
-﻿using Apps.EasyTranslate.Api;
-using Apps.EasyTranslate.Invocables;
+﻿using Apps.EasyTranslate.Invocables;
 using Apps.EasyTranslate.Models.Dto.Projects;
 using Apps.EasyTranslate.Models.Responses.Projects;
 using Apps.EasyTranslate.Webhooks.Handlers;
 using Apps.EasyTranslate.Webhooks.Models.Payload.TaskUpdated;
 using Apps.EasyTranslate.Webhooks.Models.Responses;
-using Blackbird.Applications.Sdk.Common.Files;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Common.Webhooks;
-using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Newtonsoft.Json;
-using RestSharp;
-using System.Net;
+using Apps.EasyTranslate.Webhooks.Models.Payload.StringKeyUpdated;
 
 namespace Apps.EasyTranslate.Webhooks;
 
@@ -25,23 +21,33 @@ public class WebhookList : AppInvocable
     #region Webhooks
 
     [Webhook("On task updated", typeof(TaskUpdatedHandler), Description = "Triggered when a task updated")]
-    public async Task<WebhookResponse<TaskUpdatedResponse>> OnTaskUpdated(WebhookRequest webhookRequest)
+    public Task<WebhookResponse<TaskUpdatedResponse>> OnTaskUpdated(WebhookRequest webhookRequest)
     {
         var response = HandleWebhook<TaskUpdatedPayload>(webhookRequest);
-        return new WebhookResponse<TaskUpdatedResponse>
+        return Task.FromResult(new WebhookResponse<TaskUpdatedResponse>
         {
             Result = new TaskUpdatedResponse(response.Data)
-        };
+        });
     }
 
-    [Webhook("On project updated", typeof(ProjectUpdatedHandler), Description = "Triggered when a project updated")]
-    public async Task<WebhookResponse<ProjectResponse>> OnProjectUpdated(WebhookRequest webhookRequest)
+    [Webhook("On project price accepted", typeof(ProjectUpdatedHandler), Description = "Triggered when a project price accepted")]
+    public Task<WebhookResponse<ProjectResponse>> OnProjectUpdated(WebhookRequest webhookRequest)
     {
         var response = HandleWebhook<ProjectDto>(webhookRequest);
-        return new WebhookResponse<ProjectResponse>
+        return Task.FromResult(new WebhookResponse<ProjectResponse>
         {
             Result = new ProjectResponse(response.Data)
-        };
+        });
+    }
+    
+    [Webhook("On string key updated", typeof(StringKeyUpdatedHandler), Description = "Triggered when a string key updated")]
+    public Task<WebhookResponse<StringKeyUpdatedResponses>> OnStringKeyUpdated(WebhookRequest webhookRequest)
+    {
+        var response = HandleWebhook<StringKeyUpdatedPayload>(webhookRequest);
+        return Task.FromResult(new WebhookResponse<StringKeyUpdatedResponses>
+        {
+            Result = new StringKeyUpdatedResponses(response)
+        });
     }
 
     #endregion
