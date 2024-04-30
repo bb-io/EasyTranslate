@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Product>EasyTranslate</Product>
         <Description>EasyTranslate is a SaaS company offering translation management, cutting-edge generative AI and freelance translator/copy editor access - all on one software.</Description>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
         <RootNamespace>Apps.EasyTranslate</RootNamespace>
         <AssemblyName>Apps.EasyTranslate</AssemblyName>
     </PropertyGroup>

@@ -20,9 +20,9 @@ public class Application : IApplication, ICategoryProvider
     {
         get => new[]
         {
-            ApplicationCategory.TranslationBusinessManagement, 
             ApplicationCategory.MachineTranslationAndMtqe,
-            ApplicationCategory.ArtificialIntelligence
+            ApplicationCategory.ArtificialIntelligence,
+            ApplicationCategory.CatAndTms
         };
         set { }
     }

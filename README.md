@@ -94,7 +94,7 @@ To connect to EasyTranslate, follow these steps:
 
 - **Create content**: Create content based on provided prompt and settings
 
-## Webhooks
+## Events
 
 - **On task updated**: Triggered when a task is updated
 - **On project price accepted**: Triggered when a project price is accepted
