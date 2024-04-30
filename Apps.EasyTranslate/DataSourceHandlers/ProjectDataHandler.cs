@@ -13,13 +13,8 @@ public class ProjectDataHandler(InvocationContext invocationContext, [ActionPara
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(request.TeamName))
-        {
-            throw new InvalidOperationException("You should input a team name first");
-        }
-        
         var projectActions = new ProjectActions(InvocationContext, null);
-        var projects = await projectActions.FetchAllProjects(request, new FetchAllProjectsRequest());
+        var projects = await projectActions.FetchAllProjects(new FetchAllProjectsRequest());
         
         return projects.Projects
             .Where(x => context.SearchString == null ||

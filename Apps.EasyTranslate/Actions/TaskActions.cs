@@ -16,7 +16,7 @@ public class TaskActions(InvocationContext invocationContext) : AppInvocable(inv
     [Action("Get all tasks for a project", Description = "Get all tasks for a project")]
     public async Task<GetAllTasksResponse> GetAllTasks([ActionParameter] ProjectRequest request)
     {
-        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/{request.TeamName}/projects/{request.ProjectId}/tasks";
+        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/[teamname]/projects/{request.ProjectId}/tasks";
         var dto = await Client.ExecuteWithJson<GetAllTasksDto>(endpoint, Method.Get, null, Creds);
         return new GetAllTasksResponse(dto);
     }
@@ -24,7 +24,7 @@ public class TaskActions(InvocationContext invocationContext) : AppInvocable(inv
     [Action("Get task by ID", Description = "Get task from project by ID")]
     public async Task<TaskResponse> GetTaskById([ActionParameter] TaskRequest request)
     {
-        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/{request.TeamName}/projects/{request.ProjectId}/tasks/{request.TaskId}";
+        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/[teamname]/projects/{request.ProjectId}/tasks/{request.TaskId}";
         var dto = await Client.ExecuteWithJson<GetTaskDto>(endpoint, Method.Get, null, Creds);
         return new TaskResponse(dto.Data);
     }

@@ -2,7 +2,7 @@ using Blackbird.Applications.Sdk.Common;
 
 namespace Apps.EasyTranslate.Models.Requests;
 
-public class CreateContentRequest : TeamRequest
+public class CreateContentRequest
 {
     public string Prompt { get; set; }
 

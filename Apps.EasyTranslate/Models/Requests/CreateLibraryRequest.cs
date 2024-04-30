@@ -4,7 +4,7 @@ using Blackbird.Applications.Sdk.Common.Dynamic;
 
 namespace Apps.EasyTranslate.Models.Requests;
 
-public class CreateLibraryRequest : TeamRequest
+public class CreateLibraryRequest
 {
     public string Name { get; set; }
 

@@ -13,13 +13,8 @@ public class LibraryDataHandler(InvocationContext invocationContext, [ActionPara
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(request.TeamName))
-        {
-            throw new InvalidOperationException("You should input a team name first");
-        }
-        
         var libraryActions = new LibraryActions(InvocationContext, null);
-        var libraries = await libraryActions.GetAllLibraries(request);
+        var libraries = await libraryActions.GetAllLibraries();
         
         return libraries.Libraries
             .Where(x => context.SearchString == null ||

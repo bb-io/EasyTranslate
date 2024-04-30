@@ -13,11 +13,6 @@ public class LibraryLanguagesDataHandler(InvocationContext invocationContext, [A
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(request.TeamName))
-        {
-            throw new InvalidOperationException("You should first select a team");
-        }
-
         if (string.IsNullOrEmpty(request.LibraryId))
         {
             throw new InvalidOperationException("You should first select a library");

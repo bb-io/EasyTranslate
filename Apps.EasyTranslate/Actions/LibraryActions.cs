@@ -18,9 +18,9 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
     private readonly IFileManagementClient fileManagementClient = fileManagementClient;
 
     [Action("Get all libraries", Description = "Get all libraries for a team")]
-    public async Task<GetAllLibrariesResponse> GetAllLibraries([ActionParameter] TeamRequest request)
+    public async Task<GetAllLibrariesResponse> GetAllLibraries()
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries";
 
         var allLibraries = new List<Data<LibraryAttributes>>();
         int currentPage = 1;
@@ -48,7 +48,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
     [Action("Get a library", Description = "Get a library for a team")]
     public async Task<LibraryResponse> GetLibrary([ActionParameter] LibraryRequest request)
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}";
         var dto = await Client.ExecuteWithJson<GetLibraryDto>(endpoint, Method.Get, null, Creds);
         return new LibraryResponse(dto.Data);
     }
@@ -56,7 +56,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
     [Action("Create a library", Description = "Create a library for a team")]
     public async Task<LibraryResponse> CreateLibrary([ActionParameter] CreateLibraryRequest request)
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries";
 
         var body = new
         {
@@ -116,14 +116,14 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
     [Action("Delete a library", Description = "Delete a library for a team")]
     public async Task DeleteLibrary([ActionParameter] LibraryRequest request)
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}";
         await Client.ExecuteWithJson(endpoint, Method.Delete, null, Creds);
     }
 
     [Action("Start library automation", Description = "Start library automation for a team")]
     public async Task<LibraryAutomationResponse> StartLibraryAutomation([ActionParameter] LibraryAutomationRequest request)
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/start-automation";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/start-automation";
 
         var attributes = new Dictionary<string, object>
         {
@@ -151,7 +151,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
     [Action("Add target languages to a library", Description = "Add target languages to a library for a team")]
     public async Task<LibraryResponse> AddTargetLanguages([ActionParameter] TargetLanguagesRequest request)
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/languages";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/languages";
 
         var body = new
         {
@@ -173,7 +173,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
     public async Task<LibraryResponse> RemoveTargetLanguages([ActionParameter] RemoveTargetLanguagesRequest request)
     {
         var targetLanguage = request.TargetLanguage;
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/languages/{targetLanguage}";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/languages/{targetLanguage}";
         var dto = await Client.ExecuteWithJson<GetLibraryDto>(endpoint, Method.Delete, null, Creds);
         return new LibraryResponse(dto.Data);
     }
@@ -181,7 +181,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
     [Action("Download library", Description = "Download a library for a team")]
     public async Task<LibraryDownloadResponse> DownloadLibrary([ActionParameter] DownloadLibraryRequest request)
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/download";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/download";
 
         var body = new
         {

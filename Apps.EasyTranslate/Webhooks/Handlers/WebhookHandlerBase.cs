@@ -1,5 +1,4 @@
-﻿using Apps.EasyTranslate.Api;
-using Apps.EasyTranslate.Constants;
+﻿using Apps.EasyTranslate.Constants;
 using Apps.EasyTranslate.Invocables;
 using Apps.EasyTranslate.Models.Dto.Generic;
 using Apps.EasyTranslate.Models.Dto.Webhooks;
@@ -20,8 +19,7 @@ public abstract class WebhookHandlerBase : AppInvocable, IWebhookEventHandler
 
     public async Task SubscribeAsync(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProvider, Dictionary<string, string> values)
     {
-        var teamName = Creds.Get(CredsNames.Teamname).Value;
-        var endpoint = $"/laas/api/v1/teams/{teamName}/webhook-endpoints";
+        var endpoint = "/laas/api/v1/teams/[teamname]/webhook-endpoints";
 
         var body = new
         {
@@ -49,15 +47,14 @@ public abstract class WebhookHandlerBase : AppInvocable, IWebhookEventHandler
             return;
         }
 
-        var teamName = Creds.Get(CredsNames.Teamname).Value;
-        var endpoint = $"/laas/api/v1/teams/{teamName}/webhook-endpoints/{webhook.Id}";
+        var endpoint = $"/laas/api/v1/teams/[teamname]/webhook-endpoints/{webhook.Id}";
         await Client.ExecuteWithJson(endpoint, RestSharp.Method.Delete, null, authenticationCredentialsProvider.ToArray());
     }
 
     private async Task<GetWebhooksDto> GetWebhooksAsync(IEnumerable<AuthenticationCredentialsProvider> authenticationCredentialsProvider)
     {
         var teamName = Creds.Get(CredsNames.Teamname).Value;
-        var endpoint = $"/laas/api/v1/teams/{teamName}/webhook-endpoints";
+        var endpoint = "/laas/api/v1/teams/[teamname]/webhook-endpoints";
         return await Client.ExecuteWithJson<GetWebhooksDto>(endpoint, RestSharp.Method.Get, null, authenticationCredentialsProvider.ToArray());
     }
 

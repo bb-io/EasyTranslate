@@ -25,6 +25,9 @@ public class EasyTranslateClient : RestClient
     {
         var token = await GetToken(creds);
         var baseUrl = BuildUrl(creds);
+        
+        var teamName = creds.Get(CredsNames.Teamname).Value;
+        endpoint = endpoint.Replace("[teamname]", teamName);
 
         var request = new EasyTranslateRequest(new()
         {

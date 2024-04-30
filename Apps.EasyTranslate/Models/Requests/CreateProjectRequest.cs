@@ -4,7 +4,7 @@ using Blackbird.Applications.Sdk.Common.Dynamic;
 
 namespace Apps.EasyTranslate.Models.Requests;
 
-public class CreateProjectRequest : TeamRequest
+public class CreateProjectRequest
 {
     [Display("Source language"), DataSource(typeof(SourceLanguageDataHandler))]
     public string SourceLanguage { get; set; }

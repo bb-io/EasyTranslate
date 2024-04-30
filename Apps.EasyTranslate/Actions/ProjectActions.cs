@@ -20,10 +20,9 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
     : AppInvocable(invocationContext)
 {
     [Action("Fetch all projects", Description = "Fetch all projects for a team")]
-    public async Task<FetchAllProjectsResponse> FetchAllProjects([ActionParameter] TeamRequest request,
-        [ActionParameter] FetchAllProjectsRequest fetchRequest)
+    public async Task<FetchAllProjectsResponse> FetchAllProjects([ActionParameter] FetchAllProjectsRequest fetchRequest)
     {
-        string baseEndpoint = $"{ApiEndpoints.ProjectBase}/teams/{request.TeamName}/projects";
+        string baseEndpoint = $"{ApiEndpoints.ProjectBase}/teams/[teamname]/projects";
 
         var allProjects = new List<Data<ProjectAttributes>>();
         int currentPage = 1;
@@ -52,7 +51,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
     [Action("Create a project from JSON content", Description = "Create a project from JSON content")]
     public async Task<ProjectResponse> CreateProjectFromJson([ActionParameter] CreateProjectFromJsonRequest request)
     {
-        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/{request.TeamName}/projects";
+        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/[teamname]/projects";
 
         var dto = new
         {
@@ -79,7 +78,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
     [Action("Create a project from a file", Description = "Create a project from a file")]
     public async Task<ProjectResponse> CreateProjectFromFile([ActionParameter] CreateProjectFromFileRequest request)
     {
-        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/{request.TeamName}/projects";
+        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/[teamname]/projects";
         string token = await Client.GetToken(Creds);
 
         var client = new RestClient(Client.BuildUrl(Creds));

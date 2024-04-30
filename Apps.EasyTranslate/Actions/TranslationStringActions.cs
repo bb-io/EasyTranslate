@@ -16,7 +16,7 @@ public class TranslationStringActions(InvocationContext invocationContext) : App
     [Action("Get translation strings", Description = "Get all translation strings for specific library")]
     public async Task<TranslationStringsResponse> GetTranslationStrings([ActionParameter] LibraryRequest request)
     {
-        var endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/translations";
+        var endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/translations";
         var dto = await Client.ExecuteWithJson<GetTranslationStringsDto>(endpoint, Method.Get, null, Creds);
         return new TranslationStringsResponse(dto);
     }
@@ -24,7 +24,7 @@ public class TranslationStringActions(InvocationContext invocationContext) : App
     [Action("Get translation string", Description = "Get translation string for specific library")]
     public async Task<TranslationStringResponse> GetTranslationString([ActionParameter] TranslationStringRequest request)
     {
-        var endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/translations/{request.TranslationStringId}";
+        var endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/translations/{request.TranslationStringId}";
         var dto = await Client.ExecuteWithJson<GetTranslationStringDto>(endpoint, Method.Get, null, Creds);
         return new TranslationStringResponse(dto.Data);
     }
@@ -32,7 +32,7 @@ public class TranslationStringActions(InvocationContext invocationContext) : App
     [Action("Update translation string", Description = "Update translation string for specific library")]
     public async Task<TranslationStringResponse> UpdateTranslationString([ActionParameter] UpdateTranslationStringRequest request)
     {
-        var endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/translations/{request.TranslationStringId}";
+        var endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/translations/{request.TranslationStringId}";
 
         var body = new
         {
@@ -53,7 +53,7 @@ public class TranslationStringActions(InvocationContext invocationContext) : App
     [Action("Update translation strings", Description = "Update translation strings for specific library")]
     public async Task<TranslationStringsResponse> UpdateTranslationStrings([ActionParameter] UpdateTranslationStringsRequest request)
     {
-        var endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/translations";
+        var endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/translations";
 
         var ids = request.Ids?.Select(id => Guid.Parse(id)).ToList();
         var texts = request.Text.ToList();

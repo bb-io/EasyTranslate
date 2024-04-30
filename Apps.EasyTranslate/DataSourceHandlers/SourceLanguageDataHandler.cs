@@ -15,13 +15,8 @@ public class SourceLanguageDataHandler(InvocationContext invocationContext, [Act
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(request.TeamName))
-        {
-            throw new InvalidOperationException("You should first select a team");
-        }
-
         var responses = await Client.ExecuteWithJson<GetAccountDto>(
-            ApiEndpoints.TeamBase + $"/{request.TeamName}", Method.Get, null,
+            ApiEndpoints.TeamBase + $"/[teamname]", Method.Get, null,
             Creds);
 
         var languagePairs = responses.Data.Attributes.LanguagePairs;

@@ -16,7 +16,7 @@ public class TranslationKeyActions(InvocationContext invocationContext) : AppInv
     [Action("Get translation keys", Description = "Get translation keys for specified library")]
     public async Task<TranslationKeysResponse> GetTranslationKeys([ActionParameter] LibraryRequest request)
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/keys";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/keys";
         var dto = await Client.ExecuteWithJson<GetTranslationKeysDto>(endpoint, Method.Get, null, Creds);
         return new TranslationKeysResponse(dto);
     }
@@ -24,7 +24,7 @@ public class TranslationKeyActions(InvocationContext invocationContext) : AppInv
     [Action("Get translation key", Description = "Get translation key for specified library")]
     public async Task<TranslationKeyResponse> GetTranslationKey([ActionParameter] TranslationKeyRequest request)
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/keys/{request.KeyId}";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/keys/{request.KeyId}";
         var dto = await Client.ExecuteWithJson<GetTranslationKeyDto>(endpoint, Method.Get, null, Creds);
         return new TranslationKeyResponse(dto.Data);
     }
@@ -32,7 +32,7 @@ public class TranslationKeyActions(InvocationContext invocationContext) : AppInv
     [Action("Create translation keys", Description = "Create translation key for specified library")]
     public async Task<TranslationKeysResponse> CreateTranslationKeys([ActionParameter] CreateTranslationKeysRequest request)
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/keys";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/keys";
 
         var body = new
         {
@@ -52,7 +52,6 @@ public class TranslationKeyActions(InvocationContext invocationContext) : AppInv
     {
         var keys = await CreateTranslationKeys(new CreateTranslationKeysRequest
         {
-            TeamName = request.TeamName,
             LibraryId = request.LibraryId,
             Names = new [] { request.Name },
             Texts = new [] { request.Text }
@@ -64,7 +63,7 @@ public class TranslationKeyActions(InvocationContext invocationContext) : AppInv
     [Action("Delete translation key", Description = "Delete translation key for specified library")]
     public async Task DeleteTranslationKey([ActionParameter] TranslationKeyRequest request)
     {
-        string endpoint = $"/strings-library/api/v1/teams/{request.TeamName}/libraries/{request.LibraryId}/keys/{request.KeyId}";
+        string endpoint = $"/strings-library/api/v1/teams/[teamname]/libraries/{request.LibraryId}/keys/{request.KeyId}";
         await Client.ExecuteWithJson(endpoint, Method.Delete, null, Creds);
     }
 

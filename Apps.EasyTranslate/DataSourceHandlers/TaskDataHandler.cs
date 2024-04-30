@@ -13,11 +13,6 @@ public class TaskDataHandler(InvocationContext invocationContext, [ActionParamet
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(request.TeamName))
-        {
-            throw new InvalidOperationException("You should input a team name first");
-        }
-        
         if(string.IsNullOrEmpty(request.ProjectId))
         {
             throw new InvalidOperationException("You should first select a project");

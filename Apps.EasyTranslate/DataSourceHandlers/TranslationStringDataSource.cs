@@ -13,11 +13,6 @@ public class TranslationStringDataSource(InvocationContext invocationContext, [A
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(request.TeamName))
-        {
-            throw new InvalidOperationException("You should input a team name first");
-        }
-
         if (string.IsNullOrEmpty(request.LibraryId))
         {
             throw new InvalidOperationException("You should input a library ID first");

@@ -14,9 +14,9 @@ namespace Apps.EasyTranslate.Actions;
 public class FolderActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
     [Action("Get all folders", Description = "Get all folders for a team")]
-    public async Task<GetAllFoldersResponse> GetAllFolders([ActionParameter] TeamRequest request)
+    public async Task<GetAllFoldersResponse> GetAllFolders()
     {
-        string endpoint = $"{ApiEndpoints.TeamBaseV1}/{request.TeamName}/folders";
+        string endpoint = $"{ApiEndpoints.TeamBaseV1}/[teamname]/folders";
         var dto = await Client.ExecuteWithJson<GetAllFoldersDto>(endpoint, Method.Get, null, Creds);
         return new GetAllFoldersResponse(dto);
     }
@@ -24,7 +24,7 @@ public class FolderActions(InvocationContext invocationContext) : AppInvocable(i
     [Action("Get folder", Description = "Get a folder for a team")]
     public async Task<FolderResponse> GetFolder([ActionParameter] FolderRequest request)
     {
-        string endpoint = $"{ApiEndpoints.TeamBaseV1}/{request.TeamName}/folders/{request.FolderId}";
+        string endpoint = $"{ApiEndpoints.TeamBaseV1}/[teamname]/folders/{request.FolderId}";
         var dto = await Client.ExecuteWithJson<GetFolderDto>(endpoint, Method.Get, null, Creds);
         return new FolderResponse(dto.Data);
     }
@@ -32,7 +32,7 @@ public class FolderActions(InvocationContext invocationContext) : AppInvocable(i
     [Action("Create folder", Description = "Create a folder for a team")]
     public async Task<FolderResponse> CreateFolder([ActionParameter] CreateFolderRequest request)
     {
-        string endpoint = $"{ApiEndpoints.TeamBaseV1}/{request.TeamName}/folders";
+        string endpoint = $"{ApiEndpoints.TeamBaseV1}/[teamname]/folders";
         var body = new
         {
             data = new
@@ -53,7 +53,7 @@ public class FolderActions(InvocationContext invocationContext) : AppInvocable(i
     public async Task<FolderResponse> UpdateFolder([ActionParameter] FolderRequest request, 
         [ActionParameter] UpdateFolderRequest updateRequest)
     {
-        string endpoint = $"{ApiEndpoints.TeamBaseV1}/{request.TeamName}/folders/{request.FolderId}";
+        string endpoint = $"{ApiEndpoints.TeamBaseV1}/[teamname]/folders/{request.FolderId}";
 
         var attributes = new Dictionary<string, object>
         {

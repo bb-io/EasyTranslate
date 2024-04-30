@@ -19,7 +19,7 @@ public class ContentGenerationActions(InvocationContext invocationContext) : App
         var token = await Client.GetToken(Creds); 
         var baseUrl = Client.BuildUrl(Creds);
 
-        var endpoint = $"{baseUrl}/laas/api/v1/teams/{request.TeamName}/caas/generate";
+        var endpoint = $"{baseUrl}/laas/api/v1/teams/[teamname]/caas/generate";
 
         var body = new
         {

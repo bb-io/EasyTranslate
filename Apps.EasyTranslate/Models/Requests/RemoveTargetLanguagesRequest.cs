@@ -4,7 +4,7 @@ using Blackbird.Applications.Sdk.Common.Dynamic;
 
 namespace Apps.EasyTranslate.Models.Requests;
 
-public class RemoveTargetLanguagesRequest : TeamRequest
+public class RemoveTargetLanguagesRequest
 {
     [Display("Library ID"), DataSource(typeof(LibraryDataHandler))]
     public string LibraryId { get; set; }
