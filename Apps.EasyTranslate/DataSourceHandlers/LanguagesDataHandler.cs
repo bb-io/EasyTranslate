@@ -23,6 +23,7 @@ public class LanguagesDataHandler(InvocationContext invocationContext, [ActionPa
         
         return libraries.Libraries
             .SelectMany(x => x.Languages)
+            .Distinct()
             .Where(x => context.SearchString == null ||
                         x.Contains(context.SearchString, StringComparison.OrdinalIgnoreCase))
             .Take(20)
