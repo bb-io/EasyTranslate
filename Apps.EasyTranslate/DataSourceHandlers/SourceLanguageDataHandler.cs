@@ -9,7 +9,7 @@ using RestSharp;
 
 namespace Apps.EasyTranslate.DataSourceHandlers;
 
-public class SourceLanguageDataHandler(InvocationContext invocationContext, [ActionParameter] CreateProjectRequest request)
+public class SourceLanguageDataHandler(InvocationContext invocationContext)
     : AppInvocable(invocationContext), IAsyncDataSourceHandler
 {
     public async Task<Dictionary<string, string>> GetDataAsync(DataSourceContext context,
