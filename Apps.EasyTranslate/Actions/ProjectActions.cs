@@ -83,6 +83,8 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
 
         var client = new RestClient(Client.BuildUrl(Creds));
         var easyTranslateRequest = new RestRequest(endpoint, Method.Post);
+        
+        easyTranslateRequest.AddHeader("Content-Type", "x-www-form-urlencoded");
         easyTranslateRequest.AddHeader("Authorization", $"Bearer {token}");
 
         easyTranslateRequest.AddParameter("data[type]", "projects", ParameterType.GetOrPost);
