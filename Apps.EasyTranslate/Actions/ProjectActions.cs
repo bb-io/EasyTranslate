@@ -11,6 +11,7 @@ using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
+using Blackbird.Applications.Sdk.Utils.Extensions.Http;
 using Newtonsoft.Json;
 
 namespace Apps.EasyTranslate.Actions;
@@ -86,7 +87,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         
         easyTranslateRequest.AddHeader("Content-Type", "x-www-form-urlencoded");
         easyTranslateRequest.AddHeader("Authorization", $"Bearer {token}");
-
+        
         easyTranslateRequest.AddParameter("data[type]", "projects", ParameterType.GetOrPost);
 
         int fileIndex = 0;
@@ -94,7 +95,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         {
             var stream = await fileManagementClient.DownloadAsync(file);
             var bytes = await stream.GetByteData();
-            easyTranslateRequest.AddFile($"data[attributes][files][{fileIndex}]", bytes, file.Name);
+            easyTranslateRequest.WithFile(bytes,file.Name, $"data[attributes][files][{fileIndex}]");
             fileIndex++;
         }
 
@@ -131,7 +132,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
             easyTranslateRequest.AddParameter("data[attributes][preferred_deadline]",
                 request.Deadline.Value.ToString("o"), ParameterType.GetOrPost);
         }
-
+        
         var response = await client.ExecuteAsync(easyTranslateRequest);
         if (response.IsSuccessful)
         {
