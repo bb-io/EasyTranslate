@@ -93,8 +93,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         foreach (var file in request.Files)
         {
             var stream = await fileManagementClient.DownloadAsync(file);
-            var bytes = await stream.GetByteData();
-            easyTranslateRequest.WithFile(bytes,file.Name, $"data[attributes][files][{fileIndex}]");
+            easyTranslateRequest.AddFile($"data[attributes][files][{fileIndex}]", () => stream,file.Name);
             fileIndex++;
         }
 
