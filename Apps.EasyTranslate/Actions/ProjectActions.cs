@@ -84,24 +84,12 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         var httpClient = new HttpClient();
         var teamName = Creds.Get(CredsNames.Teamname).Value;
         var endpoint = $"{ApiEndpoints.ProjectBase}/teams/{teamName}/projects";
-        var token = await Client.GetToken(Creds);
-
         var requestUrl = Client.BuildUrl(Creds) + endpoint;
         var requestData = new Dictionary<string, string>
         {
             { "data[type]", "project" },
             { "data[attributes][source_language]", request.SourceLanguage }
         };
-
-        var fileIndex = 0;
-        foreach (var file in request.Files)
-        {
-            var stream = await fileManagementClient.DownloadAsync(file);
-            var bytes = await stream.GetByteData();
-            var fileContent = Convert.ToBase64String(bytes);
-            requestData.Add($"data[attributes][files][{fileIndex}]", fileContent);
-            fileIndex++;
-        }
 
         var targetLangIndex = 0;
         foreach (var targetLang in request.TargetLanguages)
@@ -125,15 +113,33 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
             requestData.Add("data[attributes][folder_name]", request.FolderName);
         }
 
+        var fileIndex = 0;
+        foreach (var file in request.Files)
+        {
+            var stream = await fileManagementClient.DownloadAsync(file);
+            var bytes = await stream.GetByteData();
+            var fileContent = Convert.ToBase64String(bytes);
+            requestData.Add($"data[attributes][files][{fileIndex}]", fileContent);
+            fileIndex++;
+        }
+
         if (!string.IsNullOrEmpty(request.WorkflowId))
         {
             requestData.Add("data[attributes][workflow]", request.WorkflowId);
         }
 
+        if (!string.IsNullOrEmpty(request.ProjectName))
+        {
+            requestData.Add("data[attributes][name]", request.ProjectName);
+        }
+
+        var token = await Client.GetToken(Creds);
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        httpClient.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
         var content = new FormUrlEncodedContent(requestData);
-        var response = await httpClient.PostAsync(requestUrl, content);        
+        var response = await httpClient.PostAsync(requestUrl, content);
         var responseContent = await response.Content.ReadAsStringAsync();
 
         response.EnsureSuccessStatusCode();
