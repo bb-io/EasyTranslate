@@ -90,14 +90,14 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
             { "data[type]", "project" },
             { "data[attributes][source_language]", request.SourceLanguage }
         };
-
+        
         var targetLangIndex = 0;
         foreach (var targetLang in request.TargetLanguages)
         {
             requestData.Add($"data[attributes][target_languages][{targetLangIndex}]", targetLang);
             targetLangIndex++;
         }
-
+        
         if (!string.IsNullOrEmpty(request.CallbackUrl))
         {
             requestData.Add("data[attributes][callback_url]", request.CallbackUrl);
@@ -122,12 +122,12 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
             requestData.Add($"data[attributes][files][{fileIndex}]", fileContent);
             fileIndex++;
         }
-
+        
         if (!string.IsNullOrEmpty(request.WorkflowId))
         {
             requestData.Add("data[attributes][workflow]", request.WorkflowId);
         }
-
+        
         if (!string.IsNullOrEmpty(request.ProjectName))
         {
             requestData.Add("data[attributes][name]", request.ProjectName);
@@ -135,11 +135,9 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
 
         var token = await Client.GetToken(Creds);
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        httpClient.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
         var content = new FormUrlEncodedContent(requestData);
-        var response = await httpClient.PostAsync(requestUrl, content);
+        var response = await httpClient.PostAsync(requestUrl, content);        
         var responseContent = await response.Content.ReadAsStringAsync();
 
         response.EnsureSuccessStatusCode();
