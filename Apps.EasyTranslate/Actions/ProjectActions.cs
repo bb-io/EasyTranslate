@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using RestSharp;
 using Apps.EasyTranslate.Constants;
 using Apps.EasyTranslate.Invocables;
@@ -11,6 +12,8 @@ using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
+using Blackbird.Applications.Sdk.Utils.Extensions.Http;
+using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 using Newtonsoft.Json;
 
 namespace Apps.EasyTranslate.Actions;
@@ -78,14 +81,20 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
     [Action("Create a project from a file", Description = "Create a project from a file")]
     public async Task<ProjectResponse> CreateProjectFromFile([ActionParameter] CreateProjectFromFileRequest request)
     {
-        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/[teamname]/projects";
+        var teamName = Creds.Get(CredsNames.Teamname);
+        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/{teamName.Value}/projects";
         string token = await Client.GetToken(Creds);
-
-        var client = new RestClient(Client.BuildUrl(Creds));
+        var options = new RestClientOptions(Client.BuildUrl(Creds))
+        {
+            MaxTimeout = -1,
+        };
+        
+        var client = new RestClient(options);
         var easyTranslateRequest = new RestRequest(endpoint, Method.Post);
         easyTranslateRequest.AddHeader("Authorization", $"Bearer {token}");
 
-        easyTranslateRequest.AddParameter("data[type]", "projects", ParameterType.GetOrPost);
+        easyTranslateRequest.AlwaysMultipartFormData = true;
+        easyTranslateRequest.AddParameter("data[type]", "projects");
 
         int fileIndex = 0;
         foreach (var file in request.Files)
@@ -96,47 +105,45 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
             fileIndex++;
         }
 
-        easyTranslateRequest.AddParameter("data[attributes][source_language]", request.SourceLanguage,
-            ParameterType.GetOrPost);
+        easyTranslateRequest.AddParameter("data[attributes][source_language]", request.SourceLanguage);
 
         int targetLanguageIndex = 0;
         foreach (var language in request.TargetLanguages)
         {
-            easyTranslateRequest.AddParameter($"data[attributes][target_languages][{targetLanguageIndex}]", language,
-                ParameterType.GetOrPost);
-
-            targetLanguageIndex += 1;
+            easyTranslateRequest.AddParameter($"data[attributes][target_languages][{targetLanguageIndex}]", language);
+            targetLanguageIndex++;
         }
 
-        easyTranslateRequest.AddParameter("data[attributes][workflow_id]", request.WorkflowId, ParameterType.GetOrPost);
-        
-        if (request.CallbackUrl != null)
+        easyTranslateRequest.AddParameter("data[attributes][workflow_id]", request.WorkflowId);
+
+        if (!string.IsNullOrEmpty(request.CallbackUrl))
         {
-            easyTranslateRequest.AddParameter("data[attributes][callback_url]", request.CallbackUrl,
-                ParameterType.GetOrPost);
+            easyTranslateRequest.AddParameter("data[attributes][callback_url]", request.CallbackUrl);
         }
-        if (request.FolderName != null)
+
+        if (!string.IsNullOrEmpty(request.FolderName))
         {
-            easyTranslateRequest.AddParameter("data[attributes][folder_name]", request.FolderName,
-                ParameterType.GetOrPost);
+            easyTranslateRequest.AddParameter("data[attributes][folder_name]", request.FolderName);
         }
-        if (request.FolderId != null)
+
+        if (!string.IsNullOrEmpty(request.FolderId))
         {
-            easyTranslateRequest.AddParameter("data[attributes][folder_id]", request.FolderId, ParameterType.GetOrPost);
+            easyTranslateRequest.AddParameter("data[attributes][folder_id]", request.FolderId);
         }
+
         if (request.Deadline.HasValue)
         {
             easyTranslateRequest.AddParameter("data[attributes][preferred_deadline]",
-                request.Deadline.Value.ToString("o"), ParameterType.GetOrPost);
+                request.Deadline.Value.ToString("yyyy-MM-dd HH:mm:ss"));
         }
 
         var response = await client.ExecuteAsync(easyTranslateRequest);
-        if (response.IsSuccessful)
+        if (!response.IsSuccessful)
         {
-            var projectResponse = JsonConvert.DeserializeObject<GetAllProjectsDto>(response.Content);
-            return new ProjectResponse(projectResponse.Data.FirstOrDefault() ?? throw new Exception("No project returned"));
+            throw new Exception($"API call failed: {response.Content}");
         }
-        
-        throw new HttpRequestException($"Error {response.StatusCode}: {response.Content}");
+
+        var projectResponse = JsonConvert.DeserializeObject<GetAllProjectsDto>(response.Content);
+        return new ProjectResponse(projectResponse.Data.FirstOrDefault() ?? throw new Exception("No project returned"));
     }
 }
