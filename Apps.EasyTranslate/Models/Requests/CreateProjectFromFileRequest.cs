@@ -17,7 +17,4 @@ public class CreateProjectFromFileRequest : CreateProjectRequest
 
     [Display("Folder ID")]
     public string? FolderId { get; set; }
-
-    [Display("Project name")]
-    public string? ProjectName { get; set; }
 }
