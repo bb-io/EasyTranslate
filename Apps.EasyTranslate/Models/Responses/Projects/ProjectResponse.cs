@@ -23,6 +23,24 @@ public class ProjectResponse
         WordsCount = data.Attributes.WordsCount;
         FileName = data.Attributes.FileName;
         Price = data.Attributes.Price.Total;
+        WorkflowId = data.Attributes.Workflow.Id;
+    }
+    
+    public ProjectResponse(Data<V1ProjectAttributes> data)
+    {
+        Id = data.Id;
+        Name = data.Attributes.Name;
+        SourceContentUrl = data.Attributes.SourceContent;
+        SourceLanguage = data.Attributes.SourceLanguage;
+        TargetLanguages = data.Attributes.TargetLanguages.ToList();
+        Status = data.Attributes.Status;
+        CreatedAt = data.Attributes.CreatedAt;
+        UpdatedAt = data.Attributes.UpdatedAt;
+        Progress = data.Attributes.Progress.Percent;
+        WordsCount = data.Attributes.WordsCount;
+        FileName = data.Attributes.FileName;
+        Price = data.Attributes.Price.Total;
+        WorkflowId = data.Attributes.Workflow;
     }
 
     public string Id { get; set; }
@@ -55,4 +73,7 @@ public class ProjectResponse
     public string FileName { get; set; }
 
     public long Price { get; set; }
+
+    [Display("Workflow ID")]
+    public string WorkflowId { get; set; }
 }
