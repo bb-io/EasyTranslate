@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Product>EasyTranslate</Product>
         <Description>EasyTranslate is a SaaS company offering translation management, cutting-edge generative AI and freelance translator/copy editor access - all on one software.</Description>
-        <Version>1.0.4</Version>
+        <Version>1.0.5</Version>
         <RootNamespace>Apps.EasyTranslate</RootNamespace>
         <AssemblyName>Apps.EasyTranslate</AssemblyName>
     </PropertyGroup>
@@ -14,10 +14,20 @@
     <ItemGroup>
         <PackageReference Include="Blackbird.Applications.Sdk.Common" Version="2.6.0" />
         <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.25" />
+        <PackageReference Include="MimeTypes" Version="2.5.2">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource CopyToOutputDirectory="Always" Include="image\icon.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\README.md">
+        <Link>README.md</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

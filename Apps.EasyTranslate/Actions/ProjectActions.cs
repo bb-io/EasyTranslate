@@ -1,7 +1,9 @@
 using System.Net.Http.Headers;
+using Apps.EasyTranslate.Api;
 using RestSharp;
 using Apps.EasyTranslate.Constants;
 using Apps.EasyTranslate.Invocables;
+using Apps.EasyTranslate.Models.Dto;
 using Apps.EasyTranslate.Models.Dto.Generic;
 using Apps.EasyTranslate.Models.Dto.Projects;
 using Apps.EasyTranslate.Models.Requests;
@@ -9,6 +11,7 @@ using Apps.EasyTranslate.Models.Responses.Projects;
 using Apps.EasyTranslate.Utils;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
+using Blackbird.Applications.Sdk.Common.Files;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
@@ -50,6 +53,14 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
 
         return new FetchAllProjectsResponse(allProjects);
     }
+    
+    [Action("Get project", Description = "Get a project by ID")]
+    public async Task<ProjectResponse> GetProject([ActionParameter] ProjectRequest request)
+    {
+        var baseEndpoint = $"/api/v1/teams/[teamname]/projects/{request.ProjectId}";
+        var dto = await Client.ExecuteWithJson<DataDto<Data<V1ProjectAttributes>>>(baseEndpoint, Method.Get, null, Creds);
+        return new ProjectResponse(dto.Data);
+    }
 
     [Action("Create a project from JSON content", Description = "Create a project from JSON content")]
     public async Task<ProjectResponse> CreateProjectFromJson([ActionParameter] CreateProjectFromJsonRequest request)
@@ -76,6 +87,31 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
 
         var response = await Client.ExecuteWithJson<ProjectResponse>(endpoint, Method.Post, dto, Creds);
         return response;
+    }
+    
+    [Action("Download source file", Description = "Download source file from a project")]
+    public async Task<FileReference> DownloadSourceFile([ActionParameter] ProjectRequest request)
+    {
+        var project = await GetProject(request);
+        var token = await Client.GetToken(Creds);
+        
+        var restClient = new RestClient(project.SourceContentUrl);
+        var restRequest = new EasyTranslateRequest(new EasyTranslateRequestParameters()
+        {
+            Method = Method.Get,
+            Url = string.Empty
+        }, token);
+        
+        var response = await restClient.ExecuteAsync(restRequest);
+        if (!response.IsSuccessful)
+        {
+            throw new Exception($"Failed to download source file: {response.Content}");
+        }
+        
+        var bytes = response.RawBytes!;
+        var memoryStream = new MemoryStream(bytes);
+        memoryStream.Position = 0;
+        return await fileManagementClient.UploadAsync(memoryStream, MimeTypes.GetMimeType(project.FileName), project.FileName);
     }
 
     [Action("Create a project from a file", Description = "Create a project from a file")]
