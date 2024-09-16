@@ -90,7 +90,8 @@ public class WebhookList : AppInvocable
         var data = JsonConvert.DeserializeObject<T>(webhookRequest.Body.ToString());
         if (data is null)
         {
-            throw new InvalidCastException(nameof(webhookRequest.Body));
+            InvocationContext.Logger?.LogError($"Deserialization failed. Body: {webhookRequest.Body}", [webhookRequest.Body.ToString()]);
+            throw new InvalidCastException($"Deserialization failed. Body: {webhookRequest.Body}");
         }
 
         return data;
