@@ -23,7 +23,7 @@ public class ProjectResponse
         WordsCount = data.Attributes.WordsCount;
         FileName = data.Attributes.FileName;
         Price = data.Attributes.Price.Total;
-        WorkflowId = data.Attributes.Workflow.Id;
+        WorkflowId = data.Attributes.Workflow;
     }
     
     public ProjectResponse(Data<V1ProjectAttributes> data)
