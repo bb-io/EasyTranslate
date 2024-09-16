@@ -40,5 +40,5 @@ public class ProjectAttributes
     public DateTime UpdatedAt { get; set; }
     
     [JsonProperty("workflow")]
-    public Data<WorkflowAttributes> Workflow { get; set; }
+    public string Workflow { get; set; }
 }
