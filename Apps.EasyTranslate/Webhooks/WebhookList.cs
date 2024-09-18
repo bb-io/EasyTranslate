@@ -1,5 +1,8 @@
 ﻿using Apps.EasyTranslate.Invocables;
+using Apps.EasyTranslate.Models.Dto;
+using Apps.EasyTranslate.Models.Dto.Generic;
 using Apps.EasyTranslate.Models.Dto.Projects;
+using Apps.EasyTranslate.Models.Dto.Tasks;
 using Apps.EasyTranslate.Models.Responses.Projects;
 using Apps.EasyTranslate.Webhooks.Handlers;
 using Apps.EasyTranslate.Webhooks.Models.Payload.TaskUpdated;
@@ -61,12 +64,12 @@ public class WebhookList : AppInvocable
     }
     
     [Webhook("On project price declined", typeof(ProjectPriceDeclinedHandler), Description = "Triggered when a project price declined")]
-    public Task<WebhookResponse<ProjectResponse>> OnProjectPriceDeclined(WebhookRequest webhookRequest)
+    public Task<WebhookResponse<ProjectV1Response>> OnProjectPriceDeclined(WebhookRequest webhookRequest)
     {
-        var response = HandleWebhook<ProjectDto>(webhookRequest);
-        return Task.FromResult(new WebhookResponse<ProjectResponse>
+        var response = HandleWebhook<DataDto<Data<V1ProjectAttributes>, TaskAttributes>>(webhookRequest);
+        return Task.FromResult(new WebhookResponse<ProjectV1Response>
         {
-            Result = new ProjectResponse(response.Data)
+            Result = new ProjectV1Response(response)
         });
     }
     

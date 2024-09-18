@@ -6,6 +6,7 @@ using Apps.EasyTranslate.Invocables;
 using Apps.EasyTranslate.Models.Dto;
 using Apps.EasyTranslate.Models.Dto.Generic;
 using Apps.EasyTranslate.Models.Dto.Projects;
+using Apps.EasyTranslate.Models.Dto.Tasks;
 using Apps.EasyTranslate.Models.Requests;
 using Apps.EasyTranslate.Models.Responses.Projects;
 using Apps.EasyTranslate.Utils;
@@ -55,11 +56,11 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
     }
     
     [Action("Get project", Description = "Get a project by ID")]
-    public async Task<ProjectResponse> GetProject([ActionParameter] ProjectRequest request)
+    public async Task<ProjectV1Response> GetProject([ActionParameter] ProjectRequest request)
     {
         var baseEndpoint = $"/api/v1/teams/[teamname]/projects/{request.ProjectId}";
-        var dto = await Client.ExecuteWithJson<DataDto<Data<V1ProjectAttributes>>>(baseEndpoint, Method.Get, null, Creds);
-        return new ProjectResponse(dto.Data);
+        var dto = await Client.ExecuteWithJson<DataDto<Data<V1ProjectAttributes>, TaskAttributes>>(baseEndpoint, Method.Get, null, Creds);
+        return new ProjectV1Response(dto);
     }
 
     [Action("Create a project from JSON content", Description = "Create a project from JSON content")]

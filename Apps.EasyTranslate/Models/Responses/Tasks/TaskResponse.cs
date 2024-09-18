@@ -20,9 +20,13 @@ public class TaskResponse
         IsRated = dto.Attributes.IsRated;
         IsContent = dto.Attributes.IsContent;
         RevisionStatus = dto.Attributes.RevisionStatus;
+        TargetContentUrl = dto.Attributes.TargetContent;
         CreatedAt = DateTime.Parse(dto.Attributes.CreatedAt);
         UpdatedAt = DateTime.Parse(dto.Attributes.UpdatedAt);
     }
+
+    [Display("Target content URL")]
+    public string TargetContentUrl { get; set; }
     
     [Display("Task ID")]
     public string TaskId { get; set; }
@@ -63,8 +67,8 @@ public class TaskResponse
     public string RevisionStatus { get; set; }
     
     [Display("Created at")]
-    public DateTime CreatedAt { get; set; } // Example 2024-04-24T17:19:13.000000Z
+    public DateTime CreatedAt { get; set; }
     
     [Display("Updated at")]
-    public DateTime UpdatedAt { get; set; } // Example 2024-04-24T17:19:13.000000Z
+    public DateTime UpdatedAt { get; set; }
 }
