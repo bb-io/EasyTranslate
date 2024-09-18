@@ -12,7 +12,7 @@ public class FetchAllProjectsResponse
         Projects = dto.Data.Select(x => new ProjectResponse(x)).ToList();
     }
     
-    public FetchAllProjectsResponse(List<Data<ProjectAttributes>> dataList)
+    public FetchAllProjectsResponse(List<Data<ProjectWorkflowAttributes>> dataList)
     {
         Projects = dataList.Select(x => new ProjectResponse(x)).ToList();
     }

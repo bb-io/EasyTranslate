@@ -1,5 +1,7 @@
+using Apps.EasyTranslate.Models.Dto;
 using Apps.EasyTranslate.Models.Dto.Generic;
 using Apps.EasyTranslate.Models.Dto.Projects;
+using Apps.EasyTranslate.Models.Dto.Tasks;
 using Blackbird.Applications.Sdk.Common;
 
 namespace Apps.EasyTranslate.Models.Responses.Projects;

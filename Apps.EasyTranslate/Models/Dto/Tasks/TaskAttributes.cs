@@ -1,9 +1,13 @@
+using Apps.EasyTranslate.Utils;
 using Newtonsoft.Json;
 
 namespace Apps.EasyTranslate.Models.Dto.Tasks;
 
 public class TaskAttributes
 {
+    [JsonProperty("target_content")]
+    public string TargetContent { get; set; } = string.Empty;
+    
     [JsonProperty("target_language")]
     public string TargetLanguage { get; set; }
     
@@ -16,7 +20,7 @@ public class TaskAttributes
     [JsonProperty("file_name")]
     public string FileName { get; set; }
 
-    [JsonProperty("word_count")]
+    [JsonProperty("word_count"), JsonConverter(typeof(NullToDefaultConverter<long>), 0)]
     public long WordCount { get; set; }
     
     [JsonProperty("status")]
@@ -31,7 +35,7 @@ public class TaskAttributes
     [JsonProperty("is_rated")]
     public bool IsRated { get; set; }
     
-    [JsonProperty("is_content")]
+    [JsonProperty("is_content"), JsonConverter(typeof(NullToDefaultConverter<bool>), false)]
     public bool IsContent { get; set; }
 
     [JsonProperty("revision_status")]
