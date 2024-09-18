@@ -16,7 +16,6 @@ using Blackbird.Applications.Sdk.Common.Files;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
-using Blackbird.Applications.Sdk.Utils.Extensions.Http;
 using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 using Newtonsoft.Json;
 
@@ -31,7 +30,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
     {
         string baseEndpoint = $"{ApiEndpoints.ProjectBase}/teams/[teamname]/projects";
 
-        var allProjects = new List<Data<ProjectAttributes>>();
+        var allProjects = new List<Data<ProjectWorkflowAttributes>>();
         int currentPage = 1;
         MetaPagination meta;
 
