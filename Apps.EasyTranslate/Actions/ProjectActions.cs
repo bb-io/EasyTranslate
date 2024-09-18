@@ -118,8 +118,8 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
     public async Task<ProjectResponse> CreateProjectFromFile([ActionParameter] CreateProjectFromFileRequest request)
     {
         var teamName = Creds.Get(CredsNames.Teamname);
-        string endpoint = $"{ApiEndpoints.ProjectBase}/teams/{teamName.Value}/projects";
-        string token = await Client.GetToken(Creds);
+        var endpoint = $"{ApiEndpoints.ProjectBase}/teams/{teamName.Value}/projects";
+        var token = await Client.GetToken(Creds);
         var options = new RestClientOptions(Client.BuildUrl(Creds))
         {
             MaxTimeout = -1,
@@ -179,7 +179,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
             throw new Exception($"API call failed: {response.Content}");
         }
 
-        var projectResponse = JsonConvert.DeserializeObject<GetAllProjectsDto>(response.Content);
+        var projectResponse = JsonConvert.DeserializeObject<GetAllWorkflowProjectsDto>(response.Content!)!;
         return new ProjectResponse(projectResponse.Data.FirstOrDefault() ?? throw new Exception("No project returned"));
     }
 }
