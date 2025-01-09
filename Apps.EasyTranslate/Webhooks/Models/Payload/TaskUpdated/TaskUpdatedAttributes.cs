@@ -47,8 +47,11 @@ public class TaskUpdatedAttributes
     [JsonProperty("supplier_id")]
     public string SupplierId { get; set; }
 
-    [JsonProperty("project_id")]
-    public string ProjectId { get; set; }//fix it
+    //[JsonProperty("project_id")]
+    //public string ProjectId { get; set; }
+
+    [JsonProperty("project")]
+    public ProjectObject? Project { get; set; }
 
     [JsonProperty("revision_status")]
     public string RevisionStatus { get; set; }
@@ -61,4 +64,10 @@ public class TaskUpdatedAttributes
 
     [JsonProperty("updated_at")]
     public string UpdatedAt { get; set; }
+}
+
+public class ProjectObject
+{
+    [JsonProperty("id")]
+    public string Id { get; set; }
 }

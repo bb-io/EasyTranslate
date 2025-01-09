@@ -48,7 +48,7 @@ public class TaskUpdatedResponse
         WordCount = data.Attributes.WordCount;
         Status = data.Attributes.Status;
         SupplierId = data.Attributes.SupplierId;
-        ProjectId = data.Attributes.ProjectId;
+        ProjectId = data.Attributes.Project.Id;
         RevisionStatus = data.Attributes.RevisionStatus;
     }
 }

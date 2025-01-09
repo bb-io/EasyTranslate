@@ -31,7 +31,7 @@ public class WebhookList : AppInvocable
     {
         var payload = HandleWebhook<TaskUpdatedPayload>(webhookRequest);
 
-        if ((!string.IsNullOrEmpty(filter.ProjectId) && filter.ProjectId != payload.Data.Attributes.ProjectId)
+        if ((!string.IsNullOrEmpty(filter.ProjectId) && filter.ProjectId != payload.Data.Attributes.Project.Id)
          || (!string.IsNullOrEmpty(filter.TaskId) && filter.TaskId != payload.Data.Id)
          || (!string.IsNullOrEmpty(filter.SupplierId) && filter.SupplierId != payload.Data.Attributes.SupplierId))
         {
