@@ -152,6 +152,11 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
 
         easyTranslateRequest.AddParameter("data[attributes][workflow_id]", request.WorkflowId);
 
+        if (!string.IsNullOrEmpty(request.Name))
+        {
+            easyTranslateRequest.AddParameter("data[attributes][name]", request.Name);
+        }
+
         if (!string.IsNullOrEmpty(request.CallbackUrl))
         {
             easyTranslateRequest.AddParameter("data[attributes][callback_url]", request.CallbackUrl);
