@@ -20,6 +20,12 @@ public class TaskUpdatedResponse
 
     public string Type { get; set; }
 
+    [Display("Project ID")]
+    public string ProjectId { get; set; }
+
+    [Display("Suplier ID")]
+    public string SuplierId { get; set; }
+
     [Display("File name")]
     public string FileName { get; set; }
 
@@ -41,6 +47,8 @@ public class TaskUpdatedResponse
         FileName = data.Attributes.FileName;
         WordCount = data.Attributes.WordCount;
         Status = data.Attributes.Status;
+        SuplierId = data.Attributes.SuplierId;
+        ProjectId = data.Attributes.ProjectId;
         RevisionStatus = data.Attributes.RevisionStatus;
     }
 }

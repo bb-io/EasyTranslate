@@ -11,6 +11,8 @@ using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Common.Webhooks;
 using Newtonsoft.Json;
 using Apps.EasyTranslate.Webhooks.Models.Payload.StringKeyUpdated;
+using Apps.EasyTranslate.Webhooks.Models.Request;
+using System.Net;
 
 namespace Apps.EasyTranslate.Webhooks;
 
@@ -24,13 +26,26 @@ public class WebhookList : AppInvocable
     #region Webhooks
 
     [Webhook("On task updated", typeof(TaskUpdatedHandler), Description = "Triggered when a task updated")]
-    public Task<WebhookResponse<TaskUpdatedResponse>> OnTaskUpdated(WebhookRequest webhookRequest)
+    public async Task<WebhookResponse<TaskUpdatedResponse>> OnTaskUpdated(WebhookRequest webhookRequest,
+        [WebhookParameter] TaskFilter filter)
     {
-        var response = HandleWebhook<TaskUpdatedPayload>(webhookRequest);
-        return Task.FromResult(new WebhookResponse<TaskUpdatedResponse>
+        var payload = HandleWebhook<TaskUpdatedPayload>(webhookRequest);
+
+        if ((!string.IsNullOrEmpty(filter.ProjectId) && filter.ProjectId != payload.Data.Attributes.ProjectId)
+         || (!string.IsNullOrEmpty(filter.TaskId) && filter.TaskId != payload.Data.Id)
+         || (!string.IsNullOrEmpty(filter.SupplierId) && filter.SupplierId != payload.Data.Attributes.SuplierId))
         {
-            Result = new TaskUpdatedResponse(response.Data)
-        });
+            return new WebhookResponse<TaskUpdatedResponse>
+            {
+                HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK),
+                ReceivedWebhookRequestType = WebhookRequestType.Preflight
+            };
+        }
+        var response = new TaskUpdatedResponse(payload.Data);
+        return new WebhookResponse<TaskUpdatedResponse>
+        {
+            Result = response
+        };
     }
 
     [Webhook("On project price accepted", typeof(ProjectPriceAcceptedHandler), Description = "Triggered when a project price accepted")]
