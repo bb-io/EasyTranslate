@@ -74,9 +74,13 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
                 type = "projects",
                 attributes = new
                 {
+                    name = string.IsNullOrEmpty(request.Name) ? null : request.Name,
                     source_language = request.SourceLanguage,
                     target_languages = request.TargetLanguages,
                     workflow_id = request.WorkflowId,
+                    preferred_deadline = request.PreferredDeadline.HasValue
+                    ? request.PreferredDeadline.Value.ToString("yyyy-MM-dd HH:mm:ss")
+                    : null,
                     content = new
                     {
                         key = request.Content
