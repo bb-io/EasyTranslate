@@ -33,7 +33,7 @@ public class WebhookList : AppInvocable
 
         if ((!string.IsNullOrEmpty(filter.ProjectId) && filter.ProjectId != payload.Data.Attributes.ProjectId)
          || (!string.IsNullOrEmpty(filter.TaskId) && filter.TaskId != payload.Data.Id)
-         || (!string.IsNullOrEmpty(filter.SupplierId) && filter.SupplierId != payload.Data.Attributes.SuplierId))
+         || (!string.IsNullOrEmpty(filter.SupplierId) && filter.SupplierId != payload.Data.Attributes.SupplierId))
         {
             return new WebhookResponse<TaskUpdatedResponse>
             {

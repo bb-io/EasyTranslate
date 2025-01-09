@@ -44,11 +44,11 @@ public class TaskUpdatedAttributes
     [JsonProperty("order")]
     public int Order { get; set; }
 
-    [JsonProperty("suplier_id")]
-    public string SuplierId { get; set; }
+    [JsonProperty("supplier_id")]
+    public string SupplierId { get; set; }
 
     [JsonProperty("project_id")]
-    public string ProjectId { get; set; }
+    public string ProjectId { get; set; }//fix it
 
     [JsonProperty("revision_status")]
     public string RevisionStatus { get; set; }
