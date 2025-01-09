@@ -4,6 +4,7 @@ namespace Apps.EasyTranslate.Models.Requests;
 
 public class CreateContentRequest
 {
+    [Display("Prompt")]
     public string Prompt { get; set; }
 
     [Display("Language", Description = "Language, for example: en, es, fr, etc. By default en")]
@@ -27,6 +28,7 @@ public class CreateContentRequest
     [Display("Content brief")]
     public string? ContentBrief { get; set; }
 
+    [Display("Keywords")]
     public IEnumerable<string>? Keywords { get; set; }
     
     [Display("Tone of voice", Description = "Tone of voice, for example: funny, informal, etc.")]

@@ -13,7 +13,7 @@ namespace Apps.EasyTranslate.Actions;
 [ActionList]
 public class TaskActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
-    [Action("Get all tasks for a project", Description = "Get all tasks for a project")]
+    [Action("Get all tasks", Description = "Get all tasks for a specified project")]
     public async Task<GetAllTasksResponse> GetAllTasks([ActionParameter] ProjectRequest request)
     {
         string endpoint = $"{ApiEndpoints.ProjectBase}/teams/[teamname]/projects/{request.ProjectId}/tasks";

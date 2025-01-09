@@ -62,7 +62,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         return new ProjectV1Response(dto);
     }
 
-    [Action("Create a project from JSON content", Description = "Create a project from JSON content")]
+    [Action("Create a project", Description = "Create a project from form")]
     public async Task<ProjectResponse> CreateProjectFromJson([ActionParameter] CreateProjectFromJsonRequest request)
     {
         string endpoint = $"{ApiEndpoints.ProjectBase}/teams/[teamname]/projects";
@@ -118,7 +118,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         return await fileManagementClient.UploadAsync(memoryStream, MimeTypes.GetMimeType(project.FileName), project.FileName);
     }
 
-    [Action("Create a project from a file", Description = "Create a project from a file")]
+    [Action("Create project with file", Description = "Create a project from the uploaded file")]
     public async Task<ProjectResponse> CreateProjectFromFile([ActionParameter] CreateProjectFromFileRequest request)
     {
         var teamName = Creds.Get(CredsNames.Teamname);

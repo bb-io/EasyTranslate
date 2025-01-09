@@ -56,14 +56,14 @@ To connect to EasyTranslate, follow these steps:
 ### Project
 
 - **Get all projects**: Get all projects for a team
-- **Create a project from JSON content**: Create a project from JSON content
-- **Create a project from a file**: Create a project from a file
+- **Create a project**: Create a project from form
+- **Create project with file**: Create a project from the uploaded file
 - **Get project**: Get a project by ID
 - **Download source file**: Download source file from a project
 
 ### Task
 
-- **Get all tasks for a project**: Get all tasks for a project
+- **Get all tasks**: Get all tasks for a specified project
 - **Get task by ID**: Get task from project by ID
 
 ### Translation key
