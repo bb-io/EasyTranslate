@@ -5,7 +5,7 @@ namespace Apps.EasyTranslate.Models.Responses.Libraries;
 
 public class LibraryAutomationResponse
 {
-    [Display("Library automation ID")]
+    [Display("Library ID")]
     public string Id { get; set; }
 
     public string Type { get; set; }
