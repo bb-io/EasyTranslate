@@ -47,9 +47,6 @@ public class TaskUpdatedAttributes
     [JsonProperty("supplier_id")]
     public string SupplierId { get; set; }
 
-    //[JsonProperty("project_id")]
-    //public string ProjectId { get; set; }
-
     [JsonProperty("project")]
     public ProjectObject? Project { get; set; }
 
