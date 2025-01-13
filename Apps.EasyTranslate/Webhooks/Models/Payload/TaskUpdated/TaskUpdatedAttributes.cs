@@ -44,6 +44,12 @@ public class TaskUpdatedAttributes
     [JsonProperty("order")]
     public int Order { get; set; }
 
+    [JsonProperty("supplier_id")]
+    public string SupplierId { get; set; }
+
+    [JsonProperty("project")]
+    public ProjectObject? Project { get; set; }
+
     [JsonProperty("revision_status")]
     public string RevisionStatus { get; set; }
 
@@ -55,4 +61,10 @@ public class TaskUpdatedAttributes
 
     [JsonProperty("updated_at")]
     public string UpdatedAt { get; set; }
+}
+
+public class ProjectObject
+{
+    [JsonProperty("id")]
+    public string Id { get; set; }
 }

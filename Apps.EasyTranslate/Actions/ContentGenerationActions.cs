@@ -4,6 +4,7 @@ using Apps.EasyTranslate.Invocables;
 using Apps.EasyTranslate.Models.Dto.Content;
 using Apps.EasyTranslate.Models.Requests;
 using Apps.EasyTranslate.Models.Responses.Content;
+using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ namespace Apps.EasyTranslate.Actions;
 public class ContentGenerationActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
     [Action("Create content", Description = "Create content based on provided prompt and settings")]
-    public async Task<CreateContentResponse> CreateContentAsync(CreateContentRequest request)
+    public async Task<CreateContentResponse> CreateContentAsync([ActionParameter]CreateContentRequest request)
     {
         var token = await Client.GetToken(Creds); 
         var baseUrl = Client.BuildUrl(Creds);

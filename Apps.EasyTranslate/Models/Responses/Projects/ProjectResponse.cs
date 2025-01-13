@@ -62,8 +62,10 @@ public class ProjectResponse
         WorkflowId = data.Attributes.Workflow.Id;
     }
 
+    [Display("Project ID")]
     public string Id { get; set; }
-    
+
+    [Display("Project name")]
     public string Name { get; set; }
 
     [Display("Source content URL")]
