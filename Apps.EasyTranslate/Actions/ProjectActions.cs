@@ -118,7 +118,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         return await fileManagementClient.UploadAsync(memoryStream, MimeTypes.GetMimeType(project.FileName), project.FileName);
     }
 
-    [Action("Create project with file", Description = "Create a project from the uploaded file")]
+    [Action("Create project with file", Description = "Create a project with uploaded file")]
     public async Task<ProjectResponse> CreateProjectFromFile([ActionParameter] CreateProjectFromFileRequest request)
     {
         var teamName = Creds.Get(CredsNames.Teamname);

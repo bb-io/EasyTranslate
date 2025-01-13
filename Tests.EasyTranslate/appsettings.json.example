@@ -1,7 +1,11 @@
 {
     "ConnectionDefinition": {
-        "apiKey": "YOUR_API_KEY",
-        "url": "YOUR_URL"
+        "host": "",
+        "client_id": "",
+        "client_secret": "",
+        "username": "",
+        "password": "",
+        "teamname": ""
     },
-    "TestFolder": "YOUR_TEST_FOLDER"
+    "TestFolder": "TestFiles"
 }
