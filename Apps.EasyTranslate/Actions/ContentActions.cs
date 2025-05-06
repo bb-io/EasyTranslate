@@ -4,6 +4,7 @@ using Apps.EasyTranslate.Models.Requests;
 using Apps.EasyTranslate.Models.Responses.Tasks;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using RestSharp;
@@ -17,6 +18,10 @@ public class ContentActions(InvocationContext invocationContext, IFileManagement
     [Action("Download content", Description = "Download source or target content based on provided URL")]
     public async Task<DownloadTargetContentResponse> DownloadTargetContent([ActionParameter] DownloadTargetContentRequest downloadRequest)
     {
+        if (!Uri.IsWellFormedUriString(downloadRequest.ContentUrl, UriKind.Absolute))
+        {
+            throw new PluginMisconfigurationException("Content url must be a valid absolute URL. Please provide a full URL (e.g., https://api.easytranslate.com/content/{id}) and try again");
+        }
         var token = await Client.GetToken(Creds);
 
         var request = new EasyTranslateRequest(new()
