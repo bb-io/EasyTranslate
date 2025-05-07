@@ -58,6 +58,9 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
     [Action("Get project", Description = "Get a project by ID")]
     public async Task<ProjectV1Response> GetProject([ActionParameter] ProjectRequest request)
     {
+        if (string.IsNullOrWhiteSpace(request.ProjectId))
+            throw new PluginMisconfigurationException("Project ID cannot be null or empty. Please check your input and try again");
+
         var baseEndpoint = $"/api/v1/teams/[teamname]/projects/{request.ProjectId}";
         var dto = await Client.ExecuteWithJson<DataDto<Data<V1ProjectAttributes>, TaskAttributes>>(baseEndpoint, Method.Get, null, Creds);
         return new ProjectV1Response(dto);
