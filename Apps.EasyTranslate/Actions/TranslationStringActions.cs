@@ -7,6 +7,7 @@ using Blackbird.Applications.Sdk.Common;
 using Apps.EasyTranslate.Models.Responses.TranslationStrings;
 using Apps.EasyTranslate.Models.Dto.TranslationStrings;
 using Apps.EasyTranslate.Models.Dto;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 
 namespace Apps.EasyTranslate.Actions;
 
@@ -84,7 +85,7 @@ public class TranslationStringActions(InvocationContext invocationContext) : App
         {
             if (ids.Count != texts.Count)
             {
-                throw new Exception("Ids and Texts count must be equal or don't specify ids");
+                throw new PluginMisconfigurationException("Ids and Texts count must be equal or don't specify ids");
             }
 
             for (int i = 0; i < ids.Count; i++)

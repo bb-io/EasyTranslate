@@ -8,6 +8,7 @@ using Blackbird.Applications.Sdk.Utils.Extensions.Http;
 using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 
 namespace Apps.EasyTranslate.Api;
 
@@ -74,7 +75,7 @@ public class EasyTranslateClient : RestClient
 
         if (response.Data is null)
         {
-            throw new Exception("Failed to get token");
+            throw new PluginApplicationException("Failed to get token");
         }
 
         if (string.IsNullOrEmpty(response.Data.AccessToken))
@@ -100,11 +101,11 @@ public class EasyTranslateClient : RestClient
         try
         {
             var error = JsonConvert.DeserializeObject<ErrorDto>(response.Content);
-            return new Exception($"Status code: {response.StatusCode}, Message: {BuildErrorMessage(error)}");
+            return new PluginApplicationException($"Status code: {response.StatusCode}, Message: {BuildErrorMessage(error)}");
         }
         catch (Exception e)
         {        
-            return new Exception($"Status code: {response.StatusCode}, Message: {response.Content}");
+            return new PluginApplicationException($"Status code: {response.StatusCode}, Message: {response.Content}");
         }
     }
     

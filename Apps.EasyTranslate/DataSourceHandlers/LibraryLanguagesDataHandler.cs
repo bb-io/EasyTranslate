@@ -4,6 +4,7 @@ using Blackbird.Applications.Sdk.Common.Dynamic;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.Sdk.Common;
 using Apps.EasyTranslate.Actions;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 
 namespace Apps.EasyTranslate.DataSourceHandlers;
 
@@ -15,7 +16,7 @@ public class LibraryLanguagesDataHandler(InvocationContext invocationContext, [A
     {
         if (string.IsNullOrEmpty(request.LibraryId))
         {
-            throw new InvalidOperationException("You should first select a library");
+            throw new PluginMisconfigurationException("You should first select a library");
         }
 
         var libraryActions = new LibraryActions(InvocationContext, null);
