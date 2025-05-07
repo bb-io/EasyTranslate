@@ -6,6 +6,7 @@ using Apps.EasyTranslate.Models.Requests;
 using Apps.EasyTranslate.Models.Responses.Content;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Newtonsoft.Json;
 
@@ -76,7 +77,7 @@ public class ContentGenerationActions(InvocationContext invocationContext) : App
         else
         {
             var responseContent = await httpResponse.Content.ReadAsStringAsync();
-            throw new HttpRequestException($"Request failed with status code {httpResponse.StatusCode} and message: {responseContent}");
+            throw new PluginApplicationException($"Request failed with status code {httpResponse.StatusCode} and message: {responseContent}");
         }
         
         return new CreateContentResponse { Response = "No content generated" };

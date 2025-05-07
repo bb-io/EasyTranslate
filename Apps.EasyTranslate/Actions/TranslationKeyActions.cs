@@ -5,6 +5,7 @@ using Apps.EasyTranslate.Models.Requests;
 using Apps.EasyTranslate.Models.Responses.Keys;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using RestSharp;
 
@@ -73,7 +74,7 @@ public class TranslationKeyActions(InvocationContext invocationContext) : AppInv
         
         if (request.Names.Count() != request.Texts.Count())
         {
-            throw new ArgumentException("Names and Texts must have the same number of elements");
+            throw new PluginMisconfigurationException("Names and Texts must have the same number of elements");
         }
         
         for (var i = 0; i < request.Names.Count(); i++)

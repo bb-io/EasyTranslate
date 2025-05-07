@@ -3,6 +3,7 @@ using Apps.EasyTranslate.Invocables;
 using Apps.EasyTranslate.Models.Requests;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Dynamic;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 
 namespace Apps.EasyTranslate.DataSourceHandlers;
@@ -15,7 +16,7 @@ public class TranslationKeyDataSource(InvocationContext invocationContext, [Acti
     {
         if (string.IsNullOrEmpty(request.LibraryId))
         {
-            throw new InvalidOperationException("You should input a library ID first");
+            throw new PluginMisconfigurationException("You should input a library ID first");
         }
         
         var translationKeyActions = new TranslationKeyActions(InvocationContext);

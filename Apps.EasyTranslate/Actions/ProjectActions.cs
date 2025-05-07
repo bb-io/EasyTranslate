@@ -18,6 +18,7 @@ using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
 using Blackbird.Applications.Sdk.Utils.Extensions.Sdk;
 using Newtonsoft.Json;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 
 namespace Apps.EasyTranslate.Actions;
 
@@ -109,7 +110,7 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         var response = await restClient.ExecuteAsync(restRequest);
         if (!response.IsSuccessful)
         {
-            throw new Exception($"Failed to download source file: {response.Content}");
+            throw new PluginApplicationException($"Failed to download source file: {response.Content}");
         }
         
         var bytes = response.RawBytes!;
@@ -185,10 +186,10 @@ public class ProjectActions(InvocationContext invocationContext, IFileManagement
         var response = await client.ExecuteAsync(easyTranslateRequest);
         if (!response.IsSuccessful)
         {
-            throw new Exception($"API call failed: {response.Content}");
+            throw new PluginApplicationException($"API call failed: {response.Content}");
         }
 
         var projectResponse = JsonConvert.DeserializeObject<GetAllWorkflowProjectsDto>(response.Content!)!;
-        return new ProjectResponse(projectResponse.Data.FirstOrDefault() ?? throw new Exception("No project returned"));
+        return new ProjectResponse(projectResponse.Data.FirstOrDefault() ?? throw new PluginApplicationException("No project returned"));
     }
 }

@@ -32,7 +32,7 @@ public class ContentActions(InvocationContext invocationContext, IFileManagement
 
         var response = await Client.ExecuteRequest(request);
 
-        var bytes = response.RawBytes ?? throw new WebException("No content found");
+        var bytes = response.RawBytes ?? throw new PluginApplicationException("No content found");
         var memoryStream = new MemoryStream(bytes);
 
         string fileName = downloadRequest.FileName ?? $"target-content-{DateTime.Now}.json";

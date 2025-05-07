@@ -4,6 +4,7 @@ using Apps.EasyTranslate.Models.Dto.Accounts;
 using Apps.EasyTranslate.Models.Requests;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Dynamic;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using RestSharp;
 
@@ -17,7 +18,7 @@ public class TargetLanguageDataHandler(InvocationContext invocationContext, [Act
     {
         if (string.IsNullOrEmpty(request.SourceLanguage))
         {
-            throw new InvalidOperationException("You should first select a source language");
+            throw new PluginMisconfigurationException("You should first select a source language");
         }
 
         var responses = await Client.ExecuteWithJson<GetAccountDto>(
@@ -35,6 +36,6 @@ public class TargetLanguageDataHandler(InvocationContext invocationContext, [Act
                 .ToDictionary(x => x.Code, x => x.Name);
         } 
         
-        throw new InvalidOperationException("Source language not found in team language pairs");
+        throw new PluginMisconfigurationException("Source language not found in team language pairs");
     }
 }

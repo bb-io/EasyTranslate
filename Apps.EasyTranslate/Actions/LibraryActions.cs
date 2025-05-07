@@ -8,6 +8,7 @@ using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Actions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 using Blackbird.Applications.SDK.Extensions.FileManagement.Interfaces;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 
 namespace Apps.EasyTranslate.Actions;
 
@@ -201,7 +202,7 @@ public class LibraryActions(InvocationContext invocationContext, IFileManagement
 
         var response = await Client.ExecuteWithJson(endpoint, Method.Post, body, Creds);
 
-        var bytes = response.RawBytes ?? throw new Exception("Failed to download library, returned an empty response");
+        var bytes = response.RawBytes ?? throw new PluginApplicationException("Failed to download library, returned an empty response");
         var memoryStream = new MemoryStream(bytes);
 
         var library = await GetLibrary(request);

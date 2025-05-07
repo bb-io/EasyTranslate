@@ -3,6 +3,7 @@ using Apps.EasyTranslate.Invocables;
 using Apps.EasyTranslate.Models.Requests;
 using Blackbird.Applications.Sdk.Common;
 using Blackbird.Applications.Sdk.Common.Dynamic;
+using Blackbird.Applications.Sdk.Common.Exceptions;
 using Blackbird.Applications.Sdk.Common.Invocation;
 
 namespace Apps.EasyTranslate.DataSourceHandlers;
@@ -15,7 +16,7 @@ public class TaskDataHandler(InvocationContext invocationContext, [ActionParamet
     {
         if(string.IsNullOrEmpty(request.ProjectId))
         {
-            throw new InvalidOperationException("You should first select a project");
+            throw new PluginMisconfigurationException("You should first select a project");
         }
         
         var taskActions = new TaskActions(InvocationContext);
