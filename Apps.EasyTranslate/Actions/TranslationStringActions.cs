@@ -11,7 +11,7 @@ using Blackbird.Applications.Sdk.Common.Exceptions;
 
 namespace Apps.EasyTranslate.Actions;
 
-[ActionList]
+[ActionList("Translation strings")]
 public class TranslationStringActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
     [Action("Get translation strings", Description = "Get all translation strings for specific library")]

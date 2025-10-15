@@ -10,7 +10,7 @@ using RestSharp;
 
 namespace Apps.EasyTranslate.Actions;
 
-[ActionList]
+[ActionList("Tasks")]
 public class TaskActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
     [Action("Get all tasks", Description = "Get all tasks for a specified project")]

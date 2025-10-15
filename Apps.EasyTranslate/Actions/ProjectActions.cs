@@ -22,7 +22,7 @@ using Blackbird.Applications.Sdk.Common.Exceptions;
 
 namespace Apps.EasyTranslate.Actions;
 
-[ActionList]
+[ActionList("Projects")]
 public class ProjectActions(InvocationContext invocationContext, IFileManagementClient fileManagementClient)
     : AppInvocable(invocationContext)
 {
