@@ -11,7 +11,7 @@ using RestSharp;
 
 namespace Apps.EasyTranslate.Actions;
 
-[ActionList]
+[ActionList("Translation keys")]
 public class TranslationKeyActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
     [Action("Get translation keys", Description = "Get translation keys for specified library")]

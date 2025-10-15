@@ -10,7 +10,7 @@ using RestSharp;
 
 namespace Apps.EasyTranslate.Actions;
 
-[ActionList]
+[ActionList("Folders")]
 public class FolderActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
     [Action("Get all folders", Description = "Get all folders for a team")]

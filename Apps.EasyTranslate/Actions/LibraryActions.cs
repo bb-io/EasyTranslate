@@ -12,7 +12,7 @@ using Blackbird.Applications.Sdk.Common.Exceptions;
 
 namespace Apps.EasyTranslate.Actions;
 
-[ActionList]
+[ActionList("Libraries")]
 public class LibraryActions(InvocationContext invocationContext, IFileManagementClient fileManagementClient) : AppInvocable(invocationContext)
 {
     private readonly IFileManagementClient fileManagementClient = fileManagementClient;

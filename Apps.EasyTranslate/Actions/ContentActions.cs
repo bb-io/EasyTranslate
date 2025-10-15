@@ -12,7 +12,7 @@ using System.Net;
 
 namespace Apps.EasyTranslate.Actions;
 
-[ActionList]
+[ActionList("Content")]
 public class ContentActions(InvocationContext invocationContext, IFileManagementClient fileManagementClient) : AppInvocable(invocationContext)
 {
     [Action("Download content", Description = "Download source or target content based on provided URL")]

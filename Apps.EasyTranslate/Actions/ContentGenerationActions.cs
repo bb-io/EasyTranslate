@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace Apps.EasyTranslate.Actions;
 
-[ActionList]
+[ActionList("Content generation")]
 public class ContentGenerationActions(InvocationContext invocationContext) : AppInvocable(invocationContext)
 {
     [Action("Create content", Description = "Create content based on provided prompt and settings")]
