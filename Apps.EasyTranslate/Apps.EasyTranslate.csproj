@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Product>EasyTranslate</Product>
         <Description>EasyTranslate is a SaaS company offering translation management, cutting-edge generative AI and freelance translator/copy editor access - all on one software.</Description>
-        <Version>1.0.13</Version>
+        <Version>1.0.14</Version>
         <RootNamespace>Apps.EasyTranslate</RootNamespace>
         <AssemblyName>Apps.EasyTranslate</AssemblyName>
     </PropertyGroup>
@@ -25,9 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\README.md">
-        <Link>README.md</Link>
-      </Content>
+      <EmbeddedResource Include="..\README.md" Link="README.md" CopyToOutputDirectory="Always" />
     </ItemGroup>
 
 </Project>
